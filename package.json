@@ -15,6 +15,9 @@
   "homepage": "https://bitbucket.org/bigomega/activity-tracker#readme",
   "dependencies": {
     "async": "^2.1.2",
-    "google-spreadsheet": "^2.0.3"
+    "express": "^4.14.0",
+    "google-spreadsheet": "^2.0.3",
+    "moment": "^2.15.2",
+    "pug": "^2.0.0-beta6"
   }
 }
