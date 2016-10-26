@@ -1,5 +1,42 @@
-doctype
+doctype html
 head
-	script var model = !{JSON.stringify(model)}
+  link(rel="stylesheet" type="text/css" href="style.css")
+  script var model = !{JSON.stringify(model)}
+  script(src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous")
 body
-	div Today - soon to be rendered
+  -
+    const renderInput = activity => {
+      const cell = cells[activity.col]
+      switch(activity.type) {
+        case 'bool':
+          return `
+            <div class="radios">
+              <label>
+                <input type="radio" value="1" name="bool-${activity.col}" ${cell.value === "1" ? 'checked' : ''} /> Yes
+              </label>
+              <label>
+                <input type="radio" value="0" name="bool-${activity.col}" ${cell.value === "0" ? 'checked' : ''} /> No
+              </label>
+            </div>
+          `
+        case 'time':
+          const timeVal = parseInt(cell.numericValue * 24) +':'+ ((cell.numericValue * 24) % 1 * 60)
+          return `<input type="time" value=${timeVal} />`
+
+        default:
+          return '---'
+      }
+    }
+
+  #main
+    each activity in (model.values || [])
+      .activity
+        span.name= activity.name
+        if activity.children
+          each child in activity.children
+            .child
+              span.name= child.name
+              !=renderInput(child)
+        else
+          != renderInput(activity)
+    button.save Save

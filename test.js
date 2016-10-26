@@ -16,6 +16,7 @@ function setAuth(step) {
 
 function getSheet(name){
   return step => {
+    console.log('Authenticating...')
     doc.getInfo(function(err, info) {
       sheet = info.worksheets[1];
       console.log(`Loaded doc: ${info.title}, sheet: ${sheet.title}`);
@@ -34,7 +35,7 @@ function createModel(step) {
     cells.forEach(cell => allCells[cell.row - 1][cell.col] = cell)
     startDate = moment(allCells[2][1].value, 'MMM D, YYYY')
     console.log('--- Start Date -', startDate.format('l'))
-    model = []
+    model = { values: [] }
     // - iterate first row till END
     //   - if value
     //     - get value & type
@@ -43,23 +44,25 @@ function createModel(step) {
     //     - set in last value
     allCells[0].some(cell => {
       if (!cell || cell.col < 2) { return }
-      if (cell.value === '--END--')
+      if (cell.value === '--END--') {
+        model.max = cell.col
         return true
+      }
 
       const child = allCells[1][cell.col]
       const type = (allCells[2][cell.col] || {}).value
       if (!type) return
       if (cell.value) {
-        model.push({
+        model.values.push({
           name: cell.value,
           type,
           col: cell.col,
           children: child.value ? [{ name: child.value, type, col: cell.col }] : null,
         })
       } else {
-        if (!model.length) { return }
+        if (!model.values.length) { return }
         // Update last value
-        (model[model.length - 1].children || []).push({ name: child.value, type, col: cell.col })
+        (model.values[model.values.length - 1].children || []).push({ name: child.value, type, col: cell.col })
       }
     })
     console.log('--- MODEL ---\n', model)
@@ -71,18 +74,21 @@ function createModel(step) {
 function startServer(step) {
   app.set('view engine', 'pug');
   app.use(express.static('public'))
-  app.get('/', (req, res) => res.render('index', { model }))
-  app.get('/activity', getCellsOnReq)
+  app.get('/', (req, res) =>
+    getCellsForDate(null, (e, cells) => res.render('index', { model, cells: cells || {} }))
+  )
+  app.get('/activity', (req, res) =>
+    getCellsForDate(req.query.date, (err, cells) => err ? res.send(err) : res.json(cells))
+  )
   // app.post('/activity', updateCellsOnReq)
   app.listen(3000, '0.0.0.0', function() { console.log('app listening...') })
   step()
 }
 
-function getCellsOnReq(req, res) {
-  const queryDate = req.query.date ? moment(req.query.date) : moment()
+function getCellsForDate(date, cb) {
+  const queryDate = date ? moment(date) : moment()
   if (queryDate.diff(startDate, 'd') < 1) {
-    res.status(412)
-    return res.json({ message: 'Date too early' })
+    return cb({ message: 'Date too early' })
   }
   // 2 extra rows + row starts with 1
   const row = queryDate.diff(startDate, 'd') + 2 + 1
@@ -93,8 +99,8 @@ function getCellsOnReq(req, res) {
     'min-col': 2,
     'return-empty': true,
   }, function(err, cells) {
-    // console.log(cells.length)
-    res.json(err || cells)
+    const less_cells = cells && cells.filter(c => c.col < model.max).reduce((mem, c) => (mem[c.col] = c, mem), { row })
+    typeof cb === 'function' && cb(err, less_cells)
   })
 }
 
