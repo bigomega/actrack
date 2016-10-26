@@ -77,9 +77,10 @@ function startServer(step) {
   app.use(express.static('public'))
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: false }))
-  app.get('/:date?', (req, res) =>
-    getCellsForDate(req.params.date, (e, cells) => res.render('index', { model, cells: cells || {} }))
-  )
+  app.get('(/past/:count)?', (req, res) => {
+    const date = moment().subtract(+req.params.count || 0, 'd')
+    getCellsForDate(date, (e, cells) => e ? res.send(e) : res.render('index', { model, cells, date }))
+  })
   app.get('/activity/:date', (req, res) =>
     getCellsForDate(req.params.date, (err, cells) => err ? res.send(err) : res.json(cells))
   )

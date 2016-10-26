@@ -1,6 +1,6 @@
 doctype html
 head
-  link(rel="stylesheet" type="text/css" href="style.css")
+  link(rel="stylesheet" type="text/css" href="/style.css")
   script var model = !{JSON.stringify(model)}
   script(src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous")
   meta(name="viewport" content="width=device-width, initial-scale=1")
@@ -23,10 +23,10 @@ body
             </div>
           `
         case 'time':
-          const hour = parseInt(cell.numericValue * 24)
-          const minute = ((cell.numericValue * 24) % 1 * 60)
           const apZr = val => (val < 10 ? '0' : '') + val
-          return `<input type="time" value="${apZr(hour)}:${apZr(minute)}"" data-col="${activity.col}" />`
+          const hour = apZr(parseInt(cell.numericValue * 24))
+          const minute = apZr((cell.numericValue * 24) % 1 * 60)
+          return `<input type="time" ${cell.value ? `value="${hour}:${minute}"` : ''} data-col="${activity.col}" />`
 
         default:
           return '---'
@@ -35,6 +35,7 @@ body
 
   #main(data-row=cells.row)
     h1 Track it Brah!!!
+    h3= date.format('ll')
     table
       each activity in (model.values || [])
         tr.activity
@@ -50,4 +51,4 @@ body
               td!= renderInput(child)
     button.save Save
 
-  script(src="script.js")
+  script(src="/script.js")
