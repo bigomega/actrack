@@ -75,27 +75,32 @@ td {
   display: inline-block;
   padding: 0.2rem 0.8rem;
 }
-.radios label:first-child :checked + span {
+.radios label:first-child input:checked + span {
   color: #739a37;
   border: 1px solid;
   border-radius: .25rem;
 }
-.radios label:last-child :checked + span {
+.radios label:last-child input:checked + span {
   color: red;
   border: 1px solid;
   border-radius: .25rem;
 }
-.radios label :not(:checked) + span {
+.radios label input:focus + span {
+  outline: 2px solid #70ace9;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+.radios label input:not(:checked) + span {
   text-decoration: underline;
 }
-.radios label :not(:checked) + span:hover {
+.radios label input:not(:checked) + span:hover {
   background: #ccc;
   border-radius: .25rem;
   border: 1px solid #fff;
 }
 .radios input {
-  visibility: hidden;
+  /*visibility: hidden;*/
   position: absolute;
+  opacity: 0;
 }
 
 input[type=time] {

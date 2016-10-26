@@ -4,6 +4,7 @@ var express = require('express')
 var moment = require('moment')
 var app = express()
 var bodyParser = require('body-parser')
+var basicAuth = require('basic-auth')
 
 var doc = new GoogleSpreadsheet('1pu6OYYrLFwHdEc9o3DFPfdRX42iD66Z310LyMZ52j0s')
 var sheet
@@ -72,16 +73,35 @@ function createModel(step) {
   });
 }
 
+var auth = function (req, res, next) {
+  function unauthorized(res) {
+    res.set('WWW-Authenticate', 'Basic realm=Authorization Required')
+    return res.send(401)
+  }
+
+  var user = basicAuth(req)
+
+  if (!user || !user.name || !user.pass) {
+    return unauthorized(res)
+  }
+
+  if (user.name === 'foo' && user.pass === 'crowbar') {
+    return next()
+  } else {
+    return unauthorized(res)
+  }
+}
+
 function startServer(step) {
   app.set('view engine', 'pug');
   app.use(express.static('public'))
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: false }))
-  app.get('(/past/:count)?', (req, res) => {
+  app.get('(/past/:count)?', auth, (req, res) => {
     const date = moment().subtract(+req.params.count || 0, 'd')
     getCellsForDate(date, (e, cells) => e ? res.send(e) : res.render('index', { model, cells, date }))
   })
-  app.get('/activity/:date', (req, res) =>
+  app.get('/activity/:date', auth, (req, res) =>
     getCellsForDate(req.params.date, (err, cells) => err ? res.send(err) : res.json(cells))
   )
   app.post('/activity', updateCellsOnReq)
