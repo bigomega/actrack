@@ -80,9 +80,9 @@ function startServer(step) {
   app.get('/:date?', (req, res) =>
     getCellsForDate(req.params.date, (e, cells) => res.render('index', { model, cells: cells || {} }))
   )
-  // app.get('/activity', (req, res) =>
-  //   getCellsForDate(req.query.date, (err, cells) => err ? res.send(err) : res.json(cells))
-  // )
+  app.get('/activity/:date', (req, res) =>
+    getCellsForDate(req.params.date, (err, cells) => err ? res.send(err) : res.json(cells))
+  )
   app.post('/activity', updateCellsOnReq)
   app.listen(3000, '0.0.0.0', function() { console.log('app listening...') })
   step()

@@ -12,16 +12,20 @@ body
           return `
             <div class="radios" data-col="${activity.col}" data-type="bool">
               <label>
-                <input type="radio" value="1" name="bool-${activity.col}" ${cell.value === "1" ? 'checked' : ''} /> Yes
+                <input type="radio" value="1" name="bool-${activity.col}" ${cell.value === "1" ? 'checked' : ''} />
+                <span>Yes</span>
               </label>
               <label>
-                <input type="radio" value="0" name="bool-${activity.col}" ${cell.value === "0" ? 'checked' : ''} /> No
+                <input type="radio" value="0" name="bool-${activity.col}" ${cell.value === "0" ? 'checked' : ''} />
+                <span>No</span>
               </label>
             </div>
           `
         case 'time':
-          const timeVal = parseInt(cell.numericValue * 24) +':'+ ((cell.numericValue * 24) % 1 * 60)
-          return `<input type="time" value=${timeVal} data-col="${activity.col}" />`
+          const hour = parseInt(cell.numericValue * 24)
+          const minute = ((cell.numericValue * 24) % 1 * 60)
+          const apZr = val => (val < 10 ? '0' : '') + val
+          return `<input type="time" value="${apZr(hour)}:${apZr(minute)}"" data-col="${activity.col}" />`
 
         default:
           return '---'
