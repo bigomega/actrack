@@ -3,6 +3,7 @@ head
   link(rel="stylesheet" type="text/css" href="style.css")
   script var model = !{JSON.stringify(model)}
   script(src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous")
+  meta(name="viewport" content="width=device-width, initial-scale=1")
 body
   -
     const renderInput = activity => {
@@ -33,16 +34,20 @@ body
     }
 
   #main(data-row=cells.row)
-    each activity in (model.values || [])
-      .activity
-        span.name= activity.name
+    h1 Track it Brah!!!
+    table
+      each activity in (model.values || [])
+        tr.activity
+          td.name= activity.name
+          if !activity.children
+            td!= renderInput(activity)
+          else
+            td
         if activity.children
           each child in activity.children
-            .child
-              span.name= child.name
-              !=renderInput(child)
-        else
-          != renderInput(activity)
+            tr.child
+              td.name= child.name
+              td!= renderInput(child)
     button.save Save
 
   script(src="script.js")

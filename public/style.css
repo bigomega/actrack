@@ -1,17 +1,130 @@
-#main {
-	text-align: center;
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Raleway');
+
+body {
+  font-family: 'Open Sans', Helvetica, sans-serif;
 }
 
-.activity {
-  margin-bottom: 0.5em;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 0.5em;
+#main {
+  text-align: center;
+  max-width: 400px;
+  margin: 0 auto 5rem;
+}
+
+#main h1 {
+  margin-bottom: 0.3em;
+}
+
+#main > table {
+  width: 100%;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+
+#main td:first-child {
+  text-align: right;
+  padding-right: 1em;
+}
+
+#main td:last-child {
+  text-align: left;
 }
 
 .name {
-	margin-right: 1em;
+  font-family: 'Raleway', sans-serif;
+}
+
+td {
+  position: relative;
+}
+
+.activity td {
+  padding: 1.5rem 0em .3rem;
+}
+
+.child + .activity td:before,
+.activity + .activity td:before {
+  content: ' ';
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: #ccc;
+  position: absolute;
+  top: .5rem;
+}
+
+.activity .name {
+  font-size: 1.3em;
+  /* consider removing these vvv */
+  vertical-align: top;
+  padding-top: 1.6rem;
+}
+
+.child td {
+  padding: 0.5em 0;
 }
 
 .radios {
-    display: inline-block;
+  display: inline-block;
+}
+
+.radios label {
+  cursor: pointer;
+  float: left;
+}
+.radios label span {
+  display: inline-block;
+  padding: 0.2rem 0.8rem;
+}
+.radios label:first-child :checked + span {
+  color: #739a37;
+  border: 1px solid;
+  border-radius: .25rem;
+}
+.radios label:last-child :checked + span {
+  color: red;
+  border: 1px solid;
+  border-radius: .25rem;
+}
+.radios label :not(:checked) + span {
+  text-decoration: underline;
+}
+.radios label :not(:checked) + span:hover {
+  background: #ccc;
+  border-radius: .25rem;
+  border: 1px solid #fff;
+}
+.radios input {
+  visibility: hidden;
+  position: absolute;
+}
+
+input[type=time] {
+  height: 28px;
+  font-size: 1em;
+  padding: 0 0.5em;
+  min-width: 100px;
+  font-family: 'Open Sans', sans-serif;
+  cursor: pointer;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+
+.save {
+  padding: 0.7rem 1.5rem;
+  border: 2px solid #8fc045;
+  border-radius: 20rem;
+  margin-top: 1.5rem;
+  cursor: pointer;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  opacity: 1;
+  font-size: 1.3rem;
+  background: #8fc045;
+  color: #fff;
+  border-color: #719836;
+}
+.save:hover {
+  background: #fff;
+  border-color: #8fc045;
+  color: #8fc045;
 }
