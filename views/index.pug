@@ -6,11 +6,11 @@ head
 body
   -
     const renderInput = activity => {
-      const cell = cells[activity.col]
+      const cell = cells[activity.col] || {}
       switch(activity.type) {
         case 'bool':
           return `
-            <div class="radios">
+            <div class="radios" data-col="${activity.col}" data-type="bool">
               <label>
                 <input type="radio" value="1" name="bool-${activity.col}" ${cell.value === "1" ? 'checked' : ''} /> Yes
               </label>
@@ -21,14 +21,14 @@ body
           `
         case 'time':
           const timeVal = parseInt(cell.numericValue * 24) +':'+ ((cell.numericValue * 24) % 1 * 60)
-          return `<input type="time" value=${timeVal} />`
+          return `<input type="time" value=${timeVal} data-col="${activity.col}" />`
 
         default:
           return '---'
       }
     }
 
-  #main
+  #main(data-row=cells.row)
     each activity in (model.values || [])
       .activity
         span.name= activity.name
@@ -40,3 +40,5 @@ body
         else
           != renderInput(activity)
     button.save Save
+
+  script(src="script.js")

@@ -3,6 +3,7 @@ var async = require('async')
 var express = require('express')
 var moment = require('moment')
 var app = express()
+var bodyParser = require('body-parser')
 
 var doc = new GoogleSpreadsheet('1pu6OYYrLFwHdEc9o3DFPfdRX42iD66Z310LyMZ52j0s')
 var sheet
@@ -36,7 +37,7 @@ function createModel(step) {
     startDate = moment(allCells[2][1].value, 'MMM D, YYYY')
     console.log('--- Start Date -', startDate.format('l'))
     model = { values: [] }
-    // - iterate first row till END
+    // - iterate first row till "--END--"
     //   - if value
     //     - get value & type
     //   - if space
@@ -74,13 +75,15 @@ function createModel(step) {
 function startServer(step) {
   app.set('view engine', 'pug');
   app.use(express.static('public'))
-  app.get('/', (req, res) =>
-    getCellsForDate(null, (e, cells) => res.render('index', { model, cells: cells || {} }))
+  app.use(bodyParser.json())
+  app.use(bodyParser.urlencoded({ extended: false }))
+  app.get('/:date?', (req, res) =>
+    getCellsForDate(req.params.date, (e, cells) => res.render('index', { model, cells: cells || {} }))
   )
-  app.get('/activity', (req, res) =>
-    getCellsForDate(req.query.date, (err, cells) => err ? res.send(err) : res.json(cells))
-  )
-  // app.post('/activity', updateCellsOnReq)
+  // app.get('/activity', (req, res) =>
+  //   getCellsForDate(req.query.date, (err, cells) => err ? res.send(err) : res.json(cells))
+  // )
+  app.post('/activity', updateCellsOnReq)
   app.listen(3000, '0.0.0.0', function() { console.log('app listening...') })
   step()
 }
@@ -92,15 +95,41 @@ function getCellsForDate(date, cb) {
   }
   // 2 extra rows + row starts with 1
   const row = queryDate.diff(startDate, 'd') + 2 + 1
-  console.log(`[req] for ${queryDate.format('l')} ie., R${row}`)
+  console.log(`[GET] ${queryDate.format('l')} - R${row}`)
   sheet.getCells({
     'min-row': row,
     'max-row': row,
     'min-col': 2,
+    'max-col': model.max,
     'return-empty': true,
   }, function(err, cells) {
-    const less_cells = cells && cells.filter(c => c.col < model.max).reduce((mem, c) => (mem[c.col] = c, mem), { row })
+    const less_cells = cells && cells.reduce((mem, c) => (mem[c.col] = c, mem), { row })
     typeof cb === 'function' && cb(err, less_cells)
+  })
+}
+
+function updateCellsOnReq(req, res) {
+  const data = req.body
+  if (!data.row) {
+    return res.status(400) && res.send({ message: 'Row not found' })
+  }
+  sheet.getCells({
+    'min-row': data.row,
+    'max-row': data.row,
+    'max-col': model.max,
+    'return-empty': true,
+  }, function(err, cells) {
+    const findCell = (col) => cells.filter(cell => cell.col == col)[0]
+    model.values.forEach(act => (act.children || [act]).forEach(a => {
+      if (data[a.col] !== undefined && findCell(a.col))
+        findCell(a.col).value = data[a.col]
+    }))
+    const date = moment((findCell(1) || {}).value, 'MMM D, YYYY').format('l')
+    console.log(`[POST] ${date} - R${data.row}`)
+    sheet.bulkUpdateCells(cells, (err) => {
+      console.log('  => values: ', data)
+      err ? res.status(400) && res.send(err) : res.json({ message: 'ok' })
+    })
   })
 }
 
