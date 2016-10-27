@@ -1,0 +1,10 @@
+- [x] Basic auth
+- [x] Get current day
+- [x] Update values on save
+- [x] Mobile friendly
+- [x] APIs - get.date, post.row, get.model, put.model (remodel)
+- [ ] ~ Option to get past days
+- [ ] + Show score in UI
+- [ ] ++ Local score calculator
+- [ ] ++ Show progress - analytics
+    - [ ] Basic last 7 days

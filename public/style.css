@@ -133,3 +133,10 @@ input[type=time] {
   border-color: #8fc045;
   color: #8fc045;
 }
+.save.disabled,
+.save.disabled:hover {
+  background: #ccc;
+  border-color: #999;
+  color: #fff;
+  cursor: progress;
+}

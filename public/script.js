@@ -12,11 +12,13 @@ $(function(){
       data[col] = value
     })
 
+    $('.save').addClass('disabled').text('Saving...')
     $.post('/api/activity', data)
       .done(function(){
         window.location.reload()
       })
       .fail(function(err, res){
+        $('.save').removeClass('disabled').text('Save')
         window.alert('error', JSON.stringify(err), JSON.stringify(res.body))
       })
   })

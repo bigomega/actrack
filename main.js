@@ -98,7 +98,7 @@ function startServer(step) {
     getCellsForDate(req.params.date, (err, cells) => err ? res.send(err) : res.json(cells))
   )
   app.get('/api/model', auth, (req, res) => res.json(model))
-  app.put('/api/model', (req, res) =>
+  app.put('/api/model', (req, res) => // Re-Model
     createModel(err => err ? res.send(err) : res.json({ message: 'ok' }))
   )
   app.post('/api/activity', updateCellsOnReq)
@@ -118,11 +118,11 @@ function getCellsForDate(date, cb) {
     'min-row': row,
     'max-row': row,
     'min-col': 2,
-    'max-col': model.max,
+    'max-col': model.max + 2,
     'return-empty': true,
   }, function(err, cells) {
-    const less_cells = cells && cells.reduce((mem, c) => (mem[c.col] = c, mem), { row })
-    typeof cb === 'function' && cb(err, less_cells)
+    const cellsObj = cells && cells.reduce((mem, c) => (mem[c.col] = c, mem), { row })
+    typeof cb === 'function' && cb(err, cellsObj)
   })
 }
 
