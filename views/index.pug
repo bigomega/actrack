@@ -27,7 +27,7 @@ body
         case 'time':
           const apZr = val => (val < 10 ? '0' : '') + val
           const hour = apZr(parseInt(cell.numericValue * 24))
-          const minute = apZr((cell.numericValue * 24) % 1 * 60)
+          const minute = apZr(Math.round((cell.numericValue * 24) % 1 * 60))
           return `<input type="time" ${cell.value ? `value="${hour}:${minute}"` : ''} data-col="${activity.col}" />`
 
         default:

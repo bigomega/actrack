@@ -32,6 +32,7 @@ function createModel(step) {
     'max-row': 3,
     'return-empty': true,
   }, function(err, cells) {
+    if (err) { return step(err) }
     var allCells = [[], [], []]
     // row starts from 0 but cell from 1. Weird, I know
     cells.forEach(cell => allCells[cell.row - 1][cell.col] = cell)
@@ -40,7 +41,7 @@ function createModel(step) {
     model = { values: [] }
     // - iterate first row till "--END--"
     //   - if value
-    //     - get value & type
+    //     - get value & type & child
     //   - if space
     //     - get 2nd row value & type
     //     - set in last value
@@ -69,27 +70,18 @@ function createModel(step) {
     })
     console.log('--- MODEL ---\n', model)
 
-    step();
+    step(err, model);
   });
 }
 
 var auth = function (req, res, next) {
-  function unauthorized(res) {
-    res.set('WWW-Authenticate', 'Basic realm=Authorization Required')
-    return res.sendStatus(401)
-  }
-
-  var user = basicAuth(req)
-
-  if (!user || !user.name || !user.pass) {
-    return unauthorized(res)
-  }
-
-  if (user.name === 'foo' && user.pass === 'crowbar') {
+  const user = basicAuth(req)
+  if (user && user.name === 'foo' && user.pass === 'crowbar') {
     return next()
-  } else {
-    return unauthorized(res)
   }
+
+  res.set('WWW-Authenticate', 'Basic realm=Authorization Required')
+  return res.sendStatus(401)
 }
 
 function startServer(step) {
@@ -101,10 +93,14 @@ function startServer(step) {
     const date = moment().subtract(+req.params.count || 0, 'd')
     getCellsForDate(date, (e, cells) => e ? res.send(e) : res.render('index', { model, cells, date }))
   })
-  app.get('/activity/:date', auth, (req, res) =>
+  app.get('/api/activity/:date?', auth, (req, res) =>
     getCellsForDate(req.params.date, (err, cells) => err ? res.send(err) : res.json(cells))
   )
-  app.post('/activity', updateCellsOnReq)
+  app.get('/api/model', auth, (req, res) => res.json(model))
+  app.put('/api/model', (req, res) =>
+    createModel(err => err ? res.send(err) : res.json({ message: 'ok' }))
+  )
+  app.post('/api/activity', updateCellsOnReq)
   app.listen(3000, '0.0.0.0', function() { console.log('app listening...') })
   step()
 }

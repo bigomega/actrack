@@ -12,12 +12,12 @@ $(function(){
       data[col] = value
     })
 
-    $.post('/activity', data)
+    $.post('/api/activity', data)
       .done(function(){
         window.location.reload()
       })
       .fail(function(err, res){
-        window.alert('error', err, res)
+        window.alert('error', JSON.stringify(err), JSON.stringify(res.body))
       })
   })
 })
