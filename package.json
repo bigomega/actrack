@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start-prod": "nohup node main.js &>> prod.log&",
     "start": "node main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
