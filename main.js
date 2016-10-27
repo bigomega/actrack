@@ -20,7 +20,8 @@ function getSheet(name){
   return step => {
     console.log('Authenticating...')
     doc.getInfo(function(err, info) {
-      sheet = info.worksheets[1];
+      sheet = info.worksheets.filter(s => s.title == name)[0];
+      if (!sheet) { return step('No Sheet'); }
       console.log(`Loaded doc: ${info.title}, sheet: ${sheet.title}`);
       step();
     });
