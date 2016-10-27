@@ -1,7 +1,9 @@
 doctype html
 head
   link(rel="stylesheet" type="text/css" href="/style.css")
-  script var model = !{JSON.stringify(model)}
+  script.
+    window.model = !{JSON.stringify(model)};
+    window.cells = !{JSON.stringify(cells)};
   script(src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous")
   meta(name="viewport" content="width=device-width, initial-scale=1")
   link(rel="icon" type="image/png" href="/dp-cool-128.png")
@@ -36,8 +38,20 @@ body
     }
 
   #main(data-row=cells.row)
-    h1 Track it Brah!!!
     h3= date.format('ll')
+    .score-img-container
+      .hat-bg
+        - const percent = cells[model.max].numericValue * 100
+        .percent(class=percent > 40 ? 'more' : '')= parseInt(percent) + '%'
+        - const diff = cells[model.max + 1].numericValue
+        //- ▲▼▴▾↑↓⇑⇓⇧⇩⬆⬇
+        if diff < 0
+          .diff.low ⬇ #{(Math.abs(diff) * 100).toFixed(0)}%
+        else if diff > 0
+          .diff.high ⬆ #{(diff + 1).toFixed(1).replace(/\.0$/,'')}x
+        .percent-filler(style=`height: ${percent}%;`)
+      img(src='/dp-shape.png')
+    h2 Track it Brah!!!
     table
       each activity in (model.values || [])
         tr.activity

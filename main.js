@@ -145,7 +145,7 @@ function updateCellsOnReq(req, res) {
     const date = moment((findCell(1) || {}).value, 'MMM D, YYYY').format('l')
     console.log(`[POST] ${date} - R${data.row}`)
     sheet.bulkUpdateCells(cells, (err) => {
-      console.log('  => values: ', data)
+      console.log('  => values: ', JSON.stringify(data))
       err ? res.status(400) && res.send(err) : res.json({ message: 'ok' })
     })
   })
