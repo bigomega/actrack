@@ -42,14 +42,16 @@ body
     .score-img-container
       .hat-bg
         - const percent = cells[model.max].numericValue * 100
+        - const hsl_h = ([ 0, 22, 34, 46, 58, 82, 106])[Math.floor(Math.abs(percent - .1)/(100 / 7))]
         .percent(class=percent > 40 ? 'more' : '')= parseInt(percent) + '%'
         - const diff = cells[model.max + 1].numericValue
         //- ▲▼▴▾↑↓⇑⇓⇧⇩⬆⬇
-        if diff < 0
-          .diff.low ⬇ #{(Math.abs(diff) * 100).toFixed(0)}%
-        else if diff > 0
-          .diff.high ⬆ #{(diff + 1).toFixed(1).replace(/\.0$/,'')}x
-        .percent-filler(style=`height: ${percent}%;`)
+        .diff(class=(diff > 0.35 ? 'high' : (diff < -0.35 ? 'low' : 'avg')))
+          if diff > 0
+            = `⬆ ${(diff + 1).toFixed(1).replace(/\.0$/, '')}x`
+          else if diff < 0
+            = `⬇ ${(Math.abs(diff) * 100).toFixed(0)}%`
+        .percent-filler(style=`height: ${percent}%; background: hsl(${hsl_h || 0}, 100%, 50%);`)
       img(src='/dp-shape.png')
     h2 Do it! Just DDDO it!!!
     table

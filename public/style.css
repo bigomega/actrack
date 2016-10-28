@@ -43,13 +43,19 @@ body {
 .score-img-container .diff {
   text-shadow: 0 0 3px #fff,0 0 3px #fff,0 0 3px #fff,0 0 3px #fff,0 0 3px #fff,0 0 3px #fff,0 0 3px #fff,0 0 3px #fff,0 0 3px #fff,0 0 3px #fff,0 0 3px #fff,0 0 3px #fff,0 0 3px #fff;
   background: rgba(255, 255, 255, 0.7);
+  font-family: Helvetica, sans-serif;
   font-size: 0.9em;
 }
 .score-img-container .diff.low {
   color: #ff0000;
 }
+.score-img-container .diff.avg {
+  color: rgba(0, 0, 0, 0.49);
+}
 .score-img-container .diff.high {
-  color: #8fc045;
+  color: #a5ff1c;
+  text-shadow: 0 0 3px #5f822c,0 0 3px #5f822c,0 0 3px #5f822c,0 0 3px #5f822c,0 0 3px #5f822c,0 0 3px #5f822c,0 0 3px #5f822c;
+  background: rgba(0, 0, 0, 0.25);
 }
 .score-img-container .percent-filler {
   position: absolute;
