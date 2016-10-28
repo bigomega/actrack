@@ -1,3 +1,6 @@
+Personal Activity Tracker
+
+Features
 - [x] Basic auth
 - [x] Get current day
 - [x] Update values on save
