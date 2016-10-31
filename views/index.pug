@@ -38,7 +38,10 @@ body
     }
 
   #main(data-row=cells.row)
-    h3= date.format('ll')
+    h3.date
+      a.arrow(href=`/past/${count + 1}`) ◀
+      span= date.format('ll')
+      a.arrow(href=`/past/${count - 1}`, class=(!count ? 'invisible' : '')) ▶
     .score-img-container
       .hat-bg
         - const percent = cells[model.max].numericValue * 100 || 0

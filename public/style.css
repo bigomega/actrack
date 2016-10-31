@@ -13,6 +13,25 @@ body {
   margin: 0 auto 5rem;
 }
 
+#main .date .arrow {
+  font-family: Helvetica, sans-serif;
+  padding: 0.5em;
+  margin: 0 0 0 .5em;
+  text-decoration: none;
+  color: inherit;
+  opacity: .75;
+}
+#main .date .arrow.invisible {
+  visibility: hidden;
+}
+#main .date .arrow:first-child {
+  margin: 0 .5em 0 0;
+}
+#main .date .arrow:hover {
+  color: #8fc045;
+  opacity: 1;
+}
+
 .score-img-container {
   width: 150px;
   margin: auto;

@@ -91,8 +91,9 @@ function startServer(step) {
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: false }))
   app.get('(/past/:count)?', auth, (req, res) => {
-    const date = moment().subtract(+req.params.count || 0, 'd')
-    getCellsForDate(date, (e, cells) => e ? res.send(e) : res.render('index', { model, cells, date }))
+    const count = +req.params.count || 0
+    const date = moment().subtract(count, 'd')
+    getCellsForDate(date, (e, cells) => e ? res.send(e) : res.render('index', { model, cells, date, count }))
   })
   app.get('/api/activity/:date?', auth, (req, res) =>
     getCellsForDate(req.params.date, (err, cells) => err ? res.send(err) : res.json(cells))
