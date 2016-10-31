@@ -41,7 +41,7 @@ body
     h3= date.format('ll')
     .score-img-container
       .hat-bg
-        - const percent = cells[model.max].numericValue * 100
+        - const percent = cells[model.max].numericValue * 100 || 0
         - const hsl_h = ([ 0, 22, 34, 46, 58, 82, 106])[Math.floor(Math.abs(percent - .1)/(100 / 7))]
         .percent(class=percent > 40 ? 'more' : '')= parseInt(percent) + '%'
         - const diff = cells[model.max + 1].numericValue
