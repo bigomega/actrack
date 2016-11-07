@@ -203,6 +203,18 @@ body {
   color: #fff;
   cursor: progress; }
 
+#balance .status .error {
+  display: inline-block;
+  padding: 1em;
+  background: #ff0528;
+  border: 3px solid #bb0d25;
+  color: #fff; }
+  #balance .status .error + .error {
+    margin-left: 1em; }
+  #balance .status .error .date {
+    font-size: 1.2em;
+    margin-bottom: 0.3em; }
+
 #balance .day {
   margin-bottom: 1em;
   padding-bottom: 1em;

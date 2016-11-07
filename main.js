@@ -143,7 +143,7 @@ function startServer(step) {
   app.get('/balance(/past/:count)?', auth, (req, res) => {
     const count = +req.params.count || 0
     balance.getRows(count, (e, data) =>
-      e ? res.send(e) : res.render('balance', Object.assign({ categories: balance.categories }, data))
+      e ? res.send(e) : res.render('balance', Object.assign({ categories: balance.categories, moment }, data))
     )
   })
   app.get('/api/balance(/past/:count)?', auth, (req, res) => {
@@ -221,10 +221,7 @@ balance.getRows = function(pushBack, cb) {
       }, (err, cells) => {
         if (err) { return s(err) }
         let data = cells.reduce((mem, c) => (mem[sc - c.row - 1].push(c), mem), [[],[],[],[],[],[],[]])
-        data = data.map(r => {
-          r[0].date = moment(r[0].value, 'M/D/YY').format('ll')
-          return r.sort((x,y) => x.col - y.col)
-        })
+        data = data.map(r => r.sort((x,y) => x.col - y.col))
         s(null, { data, sbiDate, stanCharDate })
       })
   ], cb)

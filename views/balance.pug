@@ -13,20 +13,22 @@ body
   #balance
     h3 Balance and spending
     hr
-    //- .status
-    //-   .sbi
-    //-     div= sbiDate.format('ll')
-    //-     span SBI
-    //-   .stanchar
-    //-     div= stanCharDate.format('ll')
-    //-     span Standard Charted
+    .status
+      if sbiDate.diff(moment(), 'd') < -1
+        .sbi.error
+          .date= sbiDate.fromNow()
+          span SBI
+      if stanCharDate.diff(moment(), 'd') < -1
+        .stanchar.error
+          .date= stanCharDate.fromNow()
+          span Standard Charted
     h1.balance= data[0][2].value
     h3.total= data[0][7].value
     //- this month categorization ratio
     each row in data
       if row[11].numericValue
         .day
-          .date= row[0].date
+          .date= moment(row[0].value, 'M/D/YY').format('ll')
           span.spending= row[11].value
           select.category()
             each cat in categories
@@ -35,7 +37,7 @@ body
           //- .notes= row[14].value
       else
         .day.empty
-          span.date= row[0].date
+          span.date= moment(row[0].value, 'M/D/YY').format('ll')
           span No expense day
 
     button.save-expense-metadata Save
