@@ -1,0 +1,230 @@
+.date .arrow {
+  font-family: Helvetica, sans-serif;
+  padding: 0.5em;
+  margin: 0 0 0 .5em;
+  text-decoration: none;
+  color: inherit;
+  opacity: .75;
+
+  &.invisible {
+    visibility: hidden;
+  }
+
+  &:first-child {
+    margin: 0 .5em 0 0;
+  }
+
+  &:hover {
+    color: #8fc045;
+    opacity: 1;
+  }
+}
+
+.score-img-container {
+  width: 150px;
+  margin: auto;
+  position: relative;
+  overflow: hidden;
+
+  .hat-bg {
+    width: 100%;
+    height: 100%;
+    /*background: #fff;*/
+    position: absolute;
+    z-index: -1;
+  }
+
+  .percent {
+    margin-top: 40px;
+    margin-bottom: 5px;
+    font-size: 40px;
+    font-weight: bold;
+    /* color: #8fc045; */
+    font-family: 'Raleway';
+    text-shadow: multiple-text-shadow(9, '0 0 4px #fff');
+  }
+
+  .percent.more {
+    text-shadow: multiple-text-shadow(9, '0 0 4px #000');
+    opacity: 0.75;
+    color: #fff;
+  }
+
+  .diff {
+    text-shadow: multiple-text-shadow(13, 0 0 3px #fff);
+    background: rgba(255, 255, 255, 0.7);
+    font-family: Helvetica, sans-serif;
+    font-size: 0.9em;
+  }
+
+  .diff.low {
+    color: #ff0000;
+  }
+
+  .diff.avg {
+    color: rgba(0, 0, 0, 0.49);
+  }
+
+  .diff.high {
+    color: #a5ff1c;
+    text-shadow: multiple-text-shadow(7, 0 0 3px #5f822c);
+    background: rgba(0, 0, 0, 0.25);
+  }
+
+  .percent-filler {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 50%;
+    background: #8fc045;
+    z-index: -1;
+    -moz-transition: all .25s linear;
+    -o-transition: all .25s linear;
+    -webkit-transition: all .25s linear;
+    transition: all .25s linear;
+  }
+
+  img {
+    width: 100%;
+    vertical-align: bottom;
+    box-shadow: 0px -15px 110px -20px #000 inset;
+  }
+}
+
+h2 {
+  margin-bottom: 0em;
+  padding-bottom: 0.3em;
+  border-bottom: 2px solid #8fc045;
+}
+
+> table {
+  width: 100%;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+
+td:first-child {
+  text-align: right;
+  padding-right: 1em !important;
+}
+
+td:last-child {
+  text-align: left;
+}
+
+.name {
+  font-family: 'Raleway', sans-serif;
+}
+
+td {
+  position: relative;
+}
+
+.activity td {
+  padding: 1.5rem 0em .3rem;
+}
+.activity:first-child td {
+  padding-top: 0.5em;
+}
+
+.child + .activity td:before,
+.activity + .activity td:before {
+  content: ' ';
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: #ddd;
+  position: absolute;
+  top: .5rem;
+}
+
+.activity .name {
+  font-size: 1.3em;
+  /* consider removing these vvv */
+  vertical-align: top;
+  padding-top: 1.6rem;
+}
+
+.child td {
+  padding: 0.5em 0;
+}
+
+.radios {
+  display: inline-block;
+
+  label {
+    cursor: pointer;
+    float: left;
+
+    span {
+      display: inline-block;
+      padding: 0.2rem 0.8rem;
+      border: 1px solid #fff;
+    }
+    &:first-child input:checked + span {
+      color: #739a37;
+      border: 1px solid;
+      border-radius: .25rem;
+    }
+    &:last-child input:checked + span {
+      color: red;
+      border: 1px solid;
+      border-radius: .25rem;
+    }
+    input:focus + span {
+      outline: 2px solid #70ace9;
+      outline: -webkit-focus-ring-color auto 5px;
+    }
+    input:not(:checked) + span {
+      text-decoration: underline;
+    }
+    input:not(:checked) + span:hover {
+      background: #ccc;
+      border-radius: .25rem;
+      border: 1px solid #fff;
+    }
+  }
+  input {
+    /*visibility: hidden;*/
+    position: absolute;
+    opacity: 0;
+  }
+}
+
+input[type=time] {
+  height: 28px;
+  font-size: 1em;
+  padding: 0 0.5em;
+  /*min-width: 100px;*/
+  font-family: 'Open Sans', sans-serif;
+  cursor: pointer;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+
+.save-workout {
+  padding: 0.7rem 1.5rem;
+  border: 2px solid #8fc045;
+  border-radius: 20rem;
+  margin-top: 1.5rem;
+  cursor: pointer;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  opacity: 1;
+  font-size: 1.3rem;
+  background: #8fc045;
+  color: #fff;
+  border-color: #719836;
+}
+.save-workout:hover {
+  background: #fff;
+  border-color: #8fc045;
+  color: #8fc045;
+}
+.save-workout.disabled,
+.save-workout.disabled:hover {
+  background: #ccc;
+  border-color: #999;
+  color: #fff;
+  cursor: progress;
+}

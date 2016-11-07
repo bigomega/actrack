@@ -1,0 +1,43 @@
+doctype html
+head
+  link(rel="stylesheet" type="text/css" href="/style.css")
+  script.
+    window.categories = !{JSON.stringify(categories)};
+    window.data = !{JSON.stringify(data)};
+  script(src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous")
+  meta(name="viewport" content="width=device-width, initial-scale=1")
+  link(rel="icon" type="image/png" href="/dp-cool-128.png")
+  title Self Tracker
+
+body
+  #balance
+    h3 Balance and spending
+    hr
+    //- .status
+    //-   .sbi
+    //-     div= sbiDate.format('ll')
+    //-     span SBI
+    //-   .stanchar
+    //-     div= stanCharDate.format('ll')
+    //-     span Standard Charted
+    h1.balance= data[0][2].value
+    h3.total= data[0][7].value
+    //- this month categorization ratio
+    each row in data
+      if row[11].numericValue
+        .day
+          .date= row[0].date
+          span.spending= row[11].value
+          select.category()
+            each cat in categories
+              option(value=cat, selected=cat === row[13].value)= cat
+          //- .comment= row[12].value
+          //- .notes= row[14].value
+      else
+        .day.empty
+          span.date= row[0].date
+          span No expense day
+
+    button.save-expense-metadata Save
+
+  script(src="/script.js")

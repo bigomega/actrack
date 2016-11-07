@@ -1,5 +1,5 @@
 $(function(){
-  $('.save').click(function(){
+  $('.save-workout').click(function(){
     var data = { row: $('#main').attr('data-row') }
     $('[data-col]').each(function(i, el){
       var col = $(el).attr('data-col')
@@ -12,13 +12,13 @@ $(function(){
       data[col] = value
     })
 
-    $('.save').addClass('disabled').text('Saving...')
-    $.post('/api/activity', data)
+    $('.save-workout').addClass('disabled').text('Saving...')
+    $.post('/api/workout/activity', data)
       .done(function(){
         window.location.reload()
       })
       .fail(function(err, res){
-        $('.save').removeClass('disabled').text('Save')
+        $('.save-workout').removeClass('disabled').text('Save')
         window.alert('error', JSON.stringify(err), JSON.stringify(res.body))
       })
   })

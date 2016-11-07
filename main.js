@@ -27,12 +27,14 @@ function getSheets(step) {
   console.log('Authenticating...')
   async.series([
     s => workout.doc.getInfo(function(err, info) {
+      workout._sheets = info
       workout.yearSheet = info.worksheets.filter(s => s.title == '2016')[0];
       if (!workout.yearSheet) { return step('No Sheet - 2016', err); }
       console.log(`Loaded doc: ${info.title}, sheet: ${workout.yearSheet.title}`);
       s(err);
     })
     , s => balance.doc.getInfo(function(err, info) {
+      balance._sheets = info
       balance.dataSheet = info.worksheets.filter(s => s.title == 'Data')[0];
       balance.categoriesSheet = info.worksheets.filter(s => s.title == 'Categories')[0];
       if (!balance.dataSheet || !balance.categoriesSheet) { return step('No Sheet - Data/Categories', err); }
@@ -42,31 +44,34 @@ function getSheets(step) {
   ] , err => step(err))
 }
 
-function getBalanceCategories(step) {
+balance.getCategories = function(cb) {
+  console.log('--- Balance ---')
   balance.categoriesSheet.getCells({
-    'max-row': 1,
+    'min-row': 11,
+    'max-row': 11,
     'min-col': 3,
     'max-col': 13,
     'return-empty': true,
   }, function(err, cells) {
-    if (err) { return step(err) }
+    if (err) { return cb(err) }
     balance.categories = cells.map(c => c.value)
-    console.log('Categories: ', balance.categories.join(', '))
-    step(null)
+    console.log(' - Categories: ', balance.categories.join(', '))
+    cb(null)
   })
 }
 
-function createWorkoutModel(step) {
+workout.createModel = function(cb) {
+  console.log('--- Workout ---')
   workout.yearSheet.getCells({
     'max-row': 3,
     'return-empty': true,
   }, function(err, cells) {
-    if (err) { return step(err) }
+    if (err) { return cb(err) }
     var allCells = [[], [], []]
     // row starts from 0 but cell from 1. Weird, I know
     cells.forEach(cell => allCells[cell.row - 1][cell.col] = cell)
     workout.startDate = moment(allCells[2][1].value, 'MMM D, YYYY')
-    console.log('--- Start Date -', workout.startDate.format('l'))
+    console.log(' - Start Date:', workout.startDate.format('l'))
     const model = { values: [] }
     // - iterate first row till "--END--"
     //   - if value
@@ -97,10 +102,10 @@ function createWorkoutModel(step) {
         (model.values[model.values.length - 1].children || []).push({ name: child.value, type, col: cell.col })
       }
     })
-    console.log('--- MODEL ---\n', model)
+    console.log(' - MODEL\n', model)
     workout.model = model
 
-    step(null);
+    cb(null);
   });
 }
 
@@ -119,24 +124,38 @@ function startServer(step) {
   app.use(express.static('public'))
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: false }))
-  app.get('(/past/:count)?', auth, (req, res) => {
+
+  app.get('/', (req, res) => res.redirect('/workout'))
+  app.get('/workout(/past/:count)?', auth, (req, res) => {
     const count = +req.params.count || 0
     const date = moment().subtract(count, 'd')
-    getCellsForDate(date, (e, cells) => e ? res.send(e) : res.render('index', { model: workout.model, cells, date, count }))
+    workout.getData(date, (e, cells) => e ? res.send(e) : res.render('index', { model: workout.model, cells, date, count }))
   })
-  app.get('/api/activity/:date?', auth, (req, res) =>
-    getCellsForDate(req.params.date, (err, cells) => err ? res.send(err) : res.json(cells))
+  app.get('/api/workout/activity/:date?', auth, (req, res) =>
+    workout.getData(req.params.date, (err, cells) => err ? res.send(err) : res.json(cells))
   )
-  app.get('/api/model', auth, (req, res) => res.json(workout.model))
-  app.put('/api/model', (req, res) => // Re-Model
-    createWorkoutModel(err => err ? res.send(err) : res.json({ message: 'ok' }))
+  app.get('/api/workout/model', auth, (req, res) => res.json(workout.model))
+  app.put('/api/workout/model', (req, res) => // Re-Model
+    workout.createModel(err => err ? res.send(err) : res.json({ message: 'ok' }))
   )
-  app.post('/api/activity', updateCellsOnReq)
-  app.listen(3000, '0.0.0.0', function() { console.log('app listening...') })
+  app.post('/api/workout/activity', workout.updateCells)
+
+  app.get('/balance(/past/:count)?', auth, (req, res) => {
+    const count = +req.params.count || 0
+    balance.getRows(count, (e, data) =>
+      e ? res.send(e) : res.render('balance', Object.assign({ categories: balance.categories }, data))
+    )
+  })
+  app.get('/api/balance(/past/:count)?', auth, (req, res) => {
+    const count = +req.params.count || 0
+    balance.getRows(count, (e, cells) => res.json({ e, cells, categories: balance.categories }))
+  })
+
+  app.listen(3000, '0.0.0.0', function() { console.log('--- App listening... 0.0.0.0:3000') })
   step()
 }
 
-function getCellsForDate(date, cb) {
+workout.getData = function(date, cb) {
   const queryDate = date ? moment(date) : moment()
   if (queryDate.diff(workout.startDate, 'd') < 1) {
     return cb({ message: 'Date too early' })
@@ -156,7 +175,7 @@ function getCellsForDate(date, cb) {
   })
 }
 
-function updateCellsOnReq(req, res) {
+workout.updateCells = function(req, res) {
   const data = req.body
   if (!data.row) {
     return res.status(400) && res.send({ message: 'Row not found' })
@@ -181,16 +200,47 @@ function updateCellsOnReq(req, res) {
   })
 }
 
+balance.getRows = function(pushBack, cb) {
+  let sbiDate, stanCharDate
+  async.waterfall([
+    s => balance.dataSheet.getCells({
+        'max-row': 4,
+        'min-col': 7,
+        'max-col': 7,
+      }, (err, cells) => {
+        if (err) { return s(err) }
+        const c = cells.slice().sort((x,y) => x.row - y.row)
+        stanCharDate = moment(c[2].value, 'D-MMM')
+        sbiDate = moment(c[3].value, 'D-MMM')
+        s(null, +c[0].value)
+      })
+    , (sc, s) => balance.dataSheet.getCells({
+        'min-row': sc - 1 - pushBack - 6,
+        'max-row': sc - 1 - pushBack,
+        'return-empty': true,
+      }, (err, cells) => {
+        if (err) { return s(err) }
+        let data = cells.reduce((mem, c) => (mem[sc - c.row - 1].push(c), mem), [[],[],[],[],[],[],[]])
+        data = data.map(r => {
+          r[0].date = moment(r[0].value, 'M/D/YY').format('ll')
+          return r.sort((x,y) => x.col - y.col)
+        })
+        s(null, { data, sbiDate, stanCharDate })
+      })
+  ], cb)
+}
+
 function debug(step) {
   step()
 }
 
 Array.prototype.and = Array.prototype.concat
+
 const asyncArray = []
   .and(setAuth)
   .and(getSheets)
-  .and(createWorkoutModel)
-  .and(getBalanceCategories)
+  .and(workout.createModel)
+  .and(balance.getCategories)
   // .and(debug)
   .and(startServer)
 
