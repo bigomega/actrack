@@ -6,30 +6,58 @@ var app = express()
 var bodyParser = require('body-parser')
 var basicAuth = require('basic-auth')
 
-var doc = new GoogleSpreadsheet('1pu6OYYrLFwHdEc9o3DFPfdRX42iD66Z310LyMZ52j0s')
-var sheet
-var model
-var startDate
+var workout = {
+  doc: new GoogleSpreadsheet('1pu6OYYrLFwHdEc9o3DFPfdRX42iD66Z310LyMZ52j0s'),
+  // yearSheet, model, startDate
+}
+var balance = {
+  doc: new GoogleSpreadsheet('1rSFdj4a8fv2aA0FqNES20Ix7tY_VJXI1vNuWGJuNuY0'),
+  // dataSheet, categoriesSheet
+}
 
 function setAuth(step) {
   var creds = require('./Personal hacks-0e20089bab35.json');
-  doc.useServiceAccountAuth(creds, step);
+  async.series([
+    s => workout.doc.useServiceAccountAuth(creds, s)
+    , s => balance.doc.useServiceAccountAuth(creds, s)
+  ] , err => step(err))
 }
 
-function getSheet(name){
-  return step => {
-    console.log('Authenticating...')
-    doc.getInfo(function(err, info) {
-      sheet = info.worksheets.filter(s => s.title == name)[0];
-      if (!sheet) { return step('No Sheet'); }
-      console.log(`Loaded doc: ${info.title}, sheet: ${sheet.title}`);
-      step();
-    });
-  }
+function getSheets(step) {
+  console.log('Authenticating...')
+  async.series([
+    s => workout.doc.getInfo(function(err, info) {
+      workout.yearSheet = info.worksheets.filter(s => s.title == '2016')[0];
+      if (!workout.yearSheet) { return step('No Sheet - 2016', err); }
+      console.log(`Loaded doc: ${info.title}, sheet: ${workout.yearSheet.title}`);
+      s(err);
+    })
+    , s => balance.doc.getInfo(function(err, info) {
+      balance.dataSheet = info.worksheets.filter(s => s.title == 'Data')[0];
+      balance.categoriesSheet = info.worksheets.filter(s => s.title == 'Categories')[0];
+      if (!balance.dataSheet || !balance.categoriesSheet) { return step('No Sheet - Data/Categories', err); }
+      console.log(`Loaded doc: ${info.title}, sheet: Data, sheet: Categories`);
+      s(err);
+    })
+  ] , err => step(err))
 }
 
-function createModel(step) {
-  sheet.getCells({
+function getBalanceCategories(step) {
+  balance.categoriesSheet.getCells({
+    'max-row': 1,
+    'min-col': 3,
+    'max-col': 13,
+    'return-empty': true,
+  }, function(err, cells) {
+    if (err) { return step(err) }
+    balance.categories = cells.map(c => c.value)
+    console.log('Categories: ', balance.categories.join(', '))
+    step(null)
+  })
+}
+
+function createWorkoutModel(step) {
+  workout.yearSheet.getCells({
     'max-row': 3,
     'return-empty': true,
   }, function(err, cells) {
@@ -37,9 +65,9 @@ function createModel(step) {
     var allCells = [[], [], []]
     // row starts from 0 but cell from 1. Weird, I know
     cells.forEach(cell => allCells[cell.row - 1][cell.col] = cell)
-    startDate = moment(allCells[2][1].value, 'MMM D, YYYY')
-    console.log('--- Start Date -', startDate.format('l'))
-    model = { values: [] }
+    workout.startDate = moment(allCells[2][1].value, 'MMM D, YYYY')
+    console.log('--- Start Date -', workout.startDate.format('l'))
+    const model = { values: [] }
     // - iterate first row till "--END--"
     //   - if value
     //     - get value & type & child
@@ -70,8 +98,9 @@ function createModel(step) {
       }
     })
     console.log('--- MODEL ---\n', model)
+    workout.model = model
 
-    step(err, model);
+    step(null);
   });
 }
 
@@ -93,14 +122,14 @@ function startServer(step) {
   app.get('(/past/:count)?', auth, (req, res) => {
     const count = +req.params.count || 0
     const date = moment().subtract(count, 'd')
-    getCellsForDate(date, (e, cells) => e ? res.send(e) : res.render('index', { model, cells, date, count }))
+    getCellsForDate(date, (e, cells) => e ? res.send(e) : res.render('index', { model: workout.model, cells, date, count }))
   })
   app.get('/api/activity/:date?', auth, (req, res) =>
     getCellsForDate(req.params.date, (err, cells) => err ? res.send(err) : res.json(cells))
   )
-  app.get('/api/model', auth, (req, res) => res.json(model))
+  app.get('/api/model', auth, (req, res) => res.json(workout.model))
   app.put('/api/model', (req, res) => // Re-Model
-    createModel(err => err ? res.send(err) : res.json({ message: 'ok' }))
+    createWorkoutModel(err => err ? res.send(err) : res.json({ message: 'ok' }))
   )
   app.post('/api/activity', updateCellsOnReq)
   app.listen(3000, '0.0.0.0', function() { console.log('app listening...') })
@@ -109,17 +138,17 @@ function startServer(step) {
 
 function getCellsForDate(date, cb) {
   const queryDate = date ? moment(date) : moment()
-  if (queryDate.diff(startDate, 'd') < 1) {
+  if (queryDate.diff(workout.startDate, 'd') < 1) {
     return cb({ message: 'Date too early' })
   }
   // 2 extra rows + row starts with 1
-  const row = queryDate.diff(startDate, 'd') + 2 + 1
+  const row = queryDate.diff(workout.startDate, 'd') + 2 + 1
   console.log(`[GET] ${queryDate.format('l')} - R${row}`)
-  sheet.getCells({
+  workout.yearSheet.getCells({
     'min-row': row,
     'max-row': row,
     'min-col': 2,
-    'max-col': model.max + 2,
+    'max-col': workout.model.max + 2,
     'return-empty': true,
   }, function(err, cells) {
     const cellsObj = cells && cells.reduce((mem, c) => (mem[c.col] = c, mem), { row })
@@ -132,20 +161,20 @@ function updateCellsOnReq(req, res) {
   if (!data.row) {
     return res.status(400) && res.send({ message: 'Row not found' })
   }
-  sheet.getCells({
+  workout.yearSheet.getCells({
     'min-row': data.row,
     'max-row': data.row,
-    'max-col': model.max,
+    'max-col': workout.model.max,
     'return-empty': true,
   }, function(err, cells) {
     const findCell = (col) => cells.filter(cell => cell.col == col)[0]
-    model.values.forEach(act => (act.children || [act]).forEach(a => {
+    workout.model.values.forEach(act => (act.children || [act]).forEach(a => {
       if (data[a.col] !== undefined && findCell(a.col))
         findCell(a.col).value = data[a.col]
     }))
     const date = moment((findCell(1) || {}).value, 'MMM D, YYYY').format('l')
     console.log(`[POST] ${date} - R${data.row}`)
-    sheet.bulkUpdateCells(cells, (err) => {
+    workout.yearSheet.bulkUpdateCells(cells, (err) => {
       console.log('  => values: ', JSON.stringify(data))
       err ? res.status(400) && res.send(err) : res.json({ message: 'ok' })
     })
@@ -159,9 +188,10 @@ function debug(step) {
 Array.prototype.and = Array.prototype.concat
 const asyncArray = []
   .and(setAuth)
-  .and(getSheet('2016'))
-  .and(createModel)
+  .and(getSheets)
+  .and(createWorkoutModel)
+  .and(getBalanceCategories)
   // .and(debug)
   .and(startServer)
 
-async.series(asyncArray)
+async.series(asyncArray, x => x && console.log('---- ERROR :', x))
