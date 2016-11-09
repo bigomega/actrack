@@ -37,21 +37,25 @@ body
         if (startWeekday > 1)
           newData = Array(startWeekday - 1).join('.').split('.').concat(data)
       .days
-        for row in newData
+        for row,i in newData
           - const date = row[0] && moment(row[0].value, 'M/D/YY')
           if row[11] && row[11].numericValue
             .day(class=`day-type-${date.day()} category-type-${(row[13].value || '').toLowerCase()}`)
               .date= date.format('D')
+              .comment= row[12].value
+              //- 📓✎📝✏️📒
+              if row[14].value
+                .note(data-id=i) 📝
+              else
+                .edit(data-id=i) ✏️
               .spending(class=row[11].numericValue > HIGH_SPENDING ? 'spending-high' : '' )
                 | #{row[11].numericValue.toLocaleString()}
-              select.category()
+              select.category
                 each cat in categories
                   option(value=cat, selected=cat === row[13].value)= cat
-              //- .comment= row[12].value
-              //- .notes= row[14].value
           else if date
             .day.empty(class=`day-type-${date.day()}`)
-              span.date= date.format('D')
+              .date= date.format('D')
           else
             .day.space
 
@@ -61,6 +65,20 @@ body
           span.box(class=`category-type-${cat.toLowerCase()}`)
           span.label= cat
 
-    //- button.save-expense-metadata Save
+    .model-container
+      .model
+        h3.date
+        h1.spending
+        select.category
+          each cat in categories
+            option(value=cat)= cat
+        br
+        input.comment(type="text")
+        br
+        textarea.note(rows=3)
+        br
+        button.save Save
+        br
+        button.close Close
 
   script(src="/script.js")

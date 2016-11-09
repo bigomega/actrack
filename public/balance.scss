@@ -32,16 +32,31 @@
   .days {
     text-align: left;
     .day {
+      position: relative;
       width: calc(100% / 7);
       display: inline-block;
       // text-align: center;
       vertical-align: top;
-      height: 120px;
+      height: 140px;
       box-shadow: 0 0 0px 1px #ccc;
       padding: 10px;
       box-sizing: border-box;
       background: #fff;
 
+      &:last-child {
+        .date {
+          background: #ff0047;
+          color: #fff;
+          width: 30px;
+          height: 26px;
+          padding-top: 4px;
+          vertical-align: middle;
+          text-align: center;
+          display: block;
+          border-radius: 50px;
+          margin: -6px 0 0 -6px;
+        }
+      }
       &.space {
         box-shadow: none;
       }
@@ -80,6 +95,36 @@
         }
       }
     }
+  }
+  .comment {
+    position: absolute;
+    top: 10px;
+    left: 35px;
+    width: calc(100% - 70px);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0.5;
+  }
+  .note,
+  .edit {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 23px;
+    height: 26px;
+    border-radius: 50px;
+    &:hover {
+      box-shadow: 0 0 10px 3px #ff0, 0 0 0 30px #ff0 inset;
+    }
+  }
+  .edit {
+    display: none;
+  }
+  .day:hover .edit {
+    display: block;
   }
   .spending {
     text-align: center;
@@ -167,29 +212,88 @@
   }
 }
 
-.save-expense-metadata {
-  padding: 0.7rem 1.5rem;
-  border: 2px solid #8fc045;
-  border-radius: 20rem;
-  margin-top: 1.5rem;
-  cursor: pointer;
-  font-family: 'Raleway', sans-serif;
-  font-weight: 600;
-  opacity: 1;
-  font-size: 1.3rem;
-  background: #8fc045;
-  color: #fff;
-  border-color: #719836;
-}
-.save-expense-metadata:hover {
-  background: #fff;
-  border-color: #8fc045;
-  color: #8fc045;
-}
-.save-expense-metadata.disabled,
-.save-expense-metadata.disabled:hover {
-  background: #ccc;
-  border-color: #999;
-  color: #fff;
-  cursor: progress;
+.model-container {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+
+  &.open {
+    display: block;
+  }
+
+  .model {
+    position: absolute;
+    left: calc(50% - 200px);
+    top: 4em;
+    width: 400px;
+    min-height: 300px;
+    background: #fff;
+    padding: 40px 20px;
+    border-radius: 3px;
+  }
+  .date {
+    margin: 0;
+  }
+  .comment {
+    margin: 2em 0 1em;
+    padding: 0.5em 1em;
+    line-height: 1.3em;
+    font-size: 1em;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    width: 200px;
+    box-sizing: border-box;
+  }
+  .note {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    width: 200px;
+    font-size: 1em;
+    box-sizing: border-box;
+    padding: .5em 1em;
+  }
+  .save {
+    padding: 0.4rem 1.3rem;
+    border: 2px solid #8fc045;
+    border-radius: 20rem;
+    margin-top: 1.5rem;
+    cursor: pointer;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+    opacity: 1;
+    font-size: 1.3rem;
+    background: #8fc045;
+    color: #fff;
+    border-color: #719836;
+
+    &:hover {
+      background: #fff;
+      border-color: #8fc045;
+      color: #8fc045;
+    }
+    &.disabled,
+    &.disabled:hover {
+      background: #ccc;
+      border-color: #999;
+      color: #fff;
+      cursor: progress;
+    }
+  }
+  .close {
+    color: #00b8ff;
+    margin-top: 1em;
+    cursor: pointer;
+    font-size: 1em;
+    background: none;
+    border: none;
+    padding: .5em 1em;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }

@@ -230,14 +230,26 @@ body {
     #balance .calendar .days {
       text-align: left; }
       #balance .calendar .days .day {
+        position: relative;
         width: calc(100% / 7);
         display: inline-block;
         vertical-align: top;
-        height: 120px;
+        height: 140px;
         box-shadow: 0 0 0px 1px #ccc;
         padding: 10px;
         box-sizing: border-box;
         background: #fff; }
+        #balance .calendar .days .day:last-child .date {
+          background: #ff0047;
+          color: #fff;
+          width: 30px;
+          height: 26px;
+          padding-top: 4px;
+          vertical-align: middle;
+          text-align: center;
+          display: block;
+          border-radius: 50px;
+          margin: -6px 0 0 -6px; }
         #balance .calendar .days .day.space {
           box-shadow: none; }
         #balance .calendar .days .day.day-type-6 {
@@ -309,6 +321,32 @@ body {
             border: none;
             border-bottom: 1px solid;
             border-radius: 0; }
+    #balance .calendar .comment {
+      position: absolute;
+      top: 10px;
+      left: 35px;
+      width: calc(100% - 70px);
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      opacity: 0.5; }
+    #balance .calendar .note,
+    #balance .calendar .edit {
+      cursor: pointer;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 23px;
+      height: 26px;
+      border-radius: 50px; }
+      #balance .calendar .note:hover,
+      #balance .calendar .edit:hover {
+        box-shadow: 0 0 10px 3px #ff0, 0 0 0 30px #ff0 inset; }
+    #balance .calendar .edit {
+      display: none; }
+    #balance .calendar .day:hover .edit {
+      display: block; }
     #balance .calendar .spending {
       text-align: center;
       margin: 10px 0px;
@@ -366,26 +404,72 @@ body {
   #balance .category-type-gifts {
     background: rgba(0, 255, 255, 0.31) !important;
     background: #b0ffff !important; }
-  #balance .save-expense-metadata {
-    padding: 0.7rem 1.5rem;
-    border: 2px solid #8fc045;
-    border-radius: 20rem;
-    margin-top: 1.5rem;
-    cursor: pointer;
-    font-family: 'Raleway', sans-serif;
-    font-weight: 600;
-    opacity: 1;
-    font-size: 1.3rem;
-    background: #8fc045;
-    color: #fff;
-    border-color: #719836; }
-  #balance .save-expense-metadata:hover {
-    background: #fff;
-    border-color: #8fc045;
-    color: #8fc045; }
-  #balance .save-expense-metadata.disabled,
-  #balance .save-expense-metadata.disabled:hover {
-    background: #ccc;
-    border-color: #999;
-    color: #fff;
-    cursor: progress; }
+  #balance .model-container {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); }
+    #balance .model-container.open {
+      display: block; }
+    #balance .model-container .model {
+      position: absolute;
+      left: calc(50% - 200px);
+      top: 4em;
+      width: 400px;
+      min-height: 300px;
+      background: #fff;
+      padding: 40px 20px;
+      border-radius: 3px; }
+    #balance .model-container .date {
+      margin: 0; }
+    #balance .model-container .comment {
+      margin: 2em 0 1em;
+      padding: 0.5em 1em;
+      line-height: 1.3em;
+      font-size: 1em;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+      width: 200px;
+      box-sizing: border-box; }
+    #balance .model-container .note {
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      width: 200px;
+      font-size: 1em;
+      box-sizing: border-box;
+      padding: .5em 1em; }
+    #balance .model-container .save {
+      padding: 0.4rem 1.3rem;
+      border: 2px solid #8fc045;
+      border-radius: 20rem;
+      margin-top: 1.5rem;
+      cursor: pointer;
+      font-family: 'Raleway', sans-serif;
+      font-weight: 600;
+      opacity: 1;
+      font-size: 1.3rem;
+      background: #8fc045;
+      color: #fff;
+      border-color: #719836; }
+      #balance .model-container .save:hover {
+        background: #fff;
+        border-color: #8fc045;
+        color: #8fc045; }
+      #balance .model-container .save.disabled, #balance .model-container .save.disabled:hover {
+        background: #ccc;
+        border-color: #999;
+        color: #fff;
+        cursor: progress; }
+    #balance .model-container .close {
+      color: #00b8ff;
+      margin-top: 1em;
+      cursor: pointer;
+      font-size: 1em;
+      background: none;
+      border: none;
+      padding: .5em 1em; }
+      #balance .model-container .close:hover {
+        text-decoration: underline; }
