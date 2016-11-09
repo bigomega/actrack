@@ -163,7 +163,7 @@ workout.getData = function(date, cb) {
   }
   // 2 extra rows + row starts with 1
   const row = queryDate.diff(workout.startDate, 'd') + 2 + 1
-  console.log(`[GET] ${queryDate.format('l')} - R${row}`)
+  console.log(`[GET] Workout: ${queryDate.format('l')} - R${row}`)
   workout.yearSheet.getCells({
     'min-row': row,
     'max-row': row,
@@ -193,7 +193,7 @@ workout.updateCells = function(req, res) {
         findCell(a.col).value = data[a.col]
     }))
     const date = moment((findCell(1) || {}).value, 'MMM D, YYYY').format('l')
-    console.log(`[POST] ${date} - R${data.row}`)
+    console.log(`[POST] Workout: ${date} - R${data.row}`)
     workout.yearSheet.bulkUpdateCells(cells, (err) => {
       console.log('  => values: ', JSON.stringify(data))
       err ? res.status(400) && res.send(err) : res.json({ message: 'ok' })
