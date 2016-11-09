@@ -1,3 +1,9 @@
+.title {
+  font-family: 'Raleway', sans-serif;;
+}
+.balance {
+  margin-bottom: -0.4em;
+}
 .status {
   .error {
     display: inline-block;
@@ -36,6 +42,9 @@
       box-sizing: border-box;
       background: #fff;
 
+      &.space {
+        box-shadow: none;
+      }
       &.empty {
         // background: #e8e8e8;
       }
@@ -43,8 +52,28 @@
         box-shadow: -3px 0 0 -1px #000,0 0 0px 1px #ccc;
       }
       &.category-type- {
-        background: red;
+        -webkit-animation: AnimationName 3s linear infinite alternate;
+        -moz-animation: AnimationName 3s linear infinite alternate;
+        -o-animation: AnimationName 3s linear infinite alternate;
+        animation: AnimationName 3s linear infinite alternate;
+
+        @mixin animation {
+          0%{background: #ce57ff}
+          20%{background: #004dff}
+          40%{background: #00fffd}
+          60%{background: #06d614}
+          80%{background: #ffbc00}
+          100%{background: #ff5353}
+        }
+        @-webkit-keyframes AnimationName { @include animation; }
+        @-moz-keyframes AnimationName { @include animation; }
+        @-o-keyframes AnimationName { @include animation; }
+        @keyframes AnimationName { @include animation; }
+
+        color: #fff;
+
         .category {
+          background-color: rgba(255, 255, 255, 0.75);
           border: none;
           border-bottom: 1px solid;
           border-radius: 0;
@@ -63,6 +92,7 @@
     }
   }
   .category {
+    cursor: pointer;
     margin: auto;
     display: block;
     border: none;
@@ -77,11 +107,11 @@
 }
 .legend {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   flex-wrap: wrap;
 
   .category {
-    margin: 10px 2em;
+    margin: 15px 2em 0 0;
   }
   .box {
     width: 20px;
@@ -102,30 +132,38 @@
   }
   &-food {
     background: rgba(19, 156, 29, 0.22) !important;
+    background: #cbe9cd !important;
   }
   &-travel {
     background: rgba(3, 169, 244, 0.33) !important;
+    background: #ace3fb !important;
   }
   &-housing {
     background: rgba(175, 98, 62, 0.3) !important;
+    background: #e7d0c5 !important;
   }
   &-health {
     background: rgba(255, 0, 0, 0.21) !important;
+    background: #ffcaca !important;
   }
   &-shopping {
     background: rgba(110, 0, 255, 0.18) !important;
+    background: #e5d1ff !important;
   }
   &-utilities {
     background: rgba(255, 212, 0, 0.19) !important;
+    background: #fff7cf !important;
   }
   &-entertainment {
     background: rgba(255, 0, 200, 0.16) !important;
+    background: #ffd7f6 !important;
   }
   &-misc {
     background: #dcdcdc !important;
   }
   &-gifts {
     background: rgba(0, 255, 255, 0.31) !important;
+    background: #b0ffff !important;
   }
 }
 

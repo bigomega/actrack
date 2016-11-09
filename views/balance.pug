@@ -11,7 +11,7 @@ head
 
 body
   #balance
-    h3 Balance and spending
+    h3.title Balance and spending
     hr
     .status
       if sbiDate.diff(moment(), 'd') < -1
@@ -35,30 +35,25 @@ body
         const startWeekday = startDay.isoWeekday()
         let newData = data
         if (startWeekday > 1)
-          newData = Array(startWeekday)
-            .join('.').split('')
-            .reverse()
-            .map((x,i) => [{
-              value: startDay.subtract(1, 'd').format('M/D/YY'),
-            }])
-            .reverse()
-            .concat(data)
+          newData = Array(startWeekday - 1).join('.').split('.').concat(data)
       .days
         for row in newData
-          - const date = moment(row[0].value, 'M/D/YY')
+          - const date = row[0] && moment(row[0].value, 'M/D/YY')
           if row[11] && row[11].numericValue
             .day(class=`day-type-${date.day()} category-type-${(row[13].value || '').toLowerCase()}`)
               .date= date.format('D')
               .spending(class=row[11].numericValue > HIGH_SPENDING ? 'spending-high' : '' )
-                | #{row[11].numericValue}
+                | #{row[11].numericValue.toLocaleString()}
               select.category()
                 each cat in categories
                   option(value=cat, selected=cat === row[13].value)= cat
               //- .comment= row[12].value
               //- .notes= row[14].value
-          else
+          else if date
             .day.empty(class=`day-type-${date.day()}`)
               span.date= date.format('D')
+          else
+            .day.space
 
     .legend
       each cat in categories
@@ -66,6 +61,6 @@ body
           span.box(class=`category-type-${cat.toLowerCase()}`)
           span.label= cat
 
-    button.save-expense-metadata Save
+    //- button.save-expense-metadata Save
 
   script(src="/script.js")

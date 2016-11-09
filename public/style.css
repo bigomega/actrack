@@ -53,7 +53,7 @@ body {
     font-size: 40px;
     font-weight: bold;
     /* color: #8fc045; */
-    font-family: 'Raleway';
+    font-family: 'Raleway', sans-serif;
     text-shadow: 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff; }
   #main .score-img-container .percent.more {
     text-shadow: 0 0 4px #000, 0 0 4px #000, 0 0 4px #000, 0 0 4px #000, 0 0 4px #000, 0 0 4px #000, 0 0 4px #000, 0 0 4px #000, 0 0 4px #000;
@@ -205,7 +205,12 @@ body {
 
 #balance {
   max-width: 1200px;
-  padding: 0 15px; }
+  padding: 0 15px;
+  box-sizing: border-box; }
+  #balance .title {
+    font-family: 'Raleway', sans-serif; }
+  #balance .balance {
+    margin-bottom: -0.4em; }
   #balance .status .error {
     display: inline-block;
     padding: 1em;
@@ -233,11 +238,74 @@ body {
         padding: 10px;
         box-sizing: border-box;
         background: #fff; }
+        #balance .calendar .days .day.space {
+          box-shadow: none; }
         #balance .calendar .days .day.day-type-6 {
           box-shadow: -3px 0 0 -1px #000,0 0 0px 1px #ccc; }
         #balance .calendar .days .day.category-type- {
-          background: red; }
+          -webkit-animation: AnimationName 3s linear infinite alternate;
+          -moz-animation: AnimationName 3s linear infinite alternate;
+          -o-animation: AnimationName 3s linear infinite alternate;
+          animation: AnimationName 3s linear infinite alternate;
+          color: #fff; }
+
+@-webkit-keyframes AnimationName {
+  0% {
+    background: #ce57ff; }
+  20% {
+    background: #004dff; }
+  40% {
+    background: #00fffd; }
+  60% {
+    background: #06d614; }
+  80% {
+    background: #ffbc00; }
+  100% {
+    background: #ff5353; } }
+
+@-moz-keyframes AnimationName {
+  0% {
+    background: #ce57ff; }
+  20% {
+    background: #004dff; }
+  40% {
+    background: #00fffd; }
+  60% {
+    background: #06d614; }
+  80% {
+    background: #ffbc00; }
+  100% {
+    background: #ff5353; } }
+
+@-o-keyframes AnimationName {
+  0% {
+    background: #ce57ff; }
+  20% {
+    background: #004dff; }
+  40% {
+    background: #00fffd; }
+  60% {
+    background: #06d614; }
+  80% {
+    background: #ffbc00; }
+  100% {
+    background: #ff5353; } }
+
+@keyframes AnimationName {
+  0% {
+    background: #ce57ff; }
+  20% {
+    background: #004dff; }
+  40% {
+    background: #00fffd; }
+  60% {
+    background: #06d614; }
+  80% {
+    background: #ffbc00; }
+  100% {
+    background: #ff5353; } }
           #balance .calendar .days .day.category-type- .category {
+            background-color: rgba(255, 255, 255, 0.75);
             border: none;
             border-bottom: 1px solid;
             border-radius: 0; }
@@ -249,6 +317,7 @@ body {
       #balance .calendar .spending.spending-high {
         color: red; }
     #balance .calendar .category {
+      cursor: pointer;
       margin: auto;
       display: block;
       border: none;
@@ -259,10 +328,10 @@ body {
         background: none; }
   #balance .legend {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-wrap: wrap; }
     #balance .legend .category {
-      margin: 10px 2em; }
+      margin: 15px 2em 0 0; }
     #balance .legend .box {
       width: 20px;
       height: 100%;
@@ -272,23 +341,31 @@ body {
       #balance .legend .box.category-type- {
         border: 1px solid #ccc; }
   #balance .category-type-food {
-    background: rgba(19, 156, 29, 0.22) !important; }
+    background: rgba(19, 156, 29, 0.22) !important;
+    background: #cbe9cd !important; }
   #balance .category-type-travel {
-    background: rgba(3, 169, 244, 0.33) !important; }
+    background: rgba(3, 169, 244, 0.33) !important;
+    background: #ace3fb !important; }
   #balance .category-type-housing {
-    background: rgba(175, 98, 62, 0.3) !important; }
+    background: rgba(175, 98, 62, 0.3) !important;
+    background: #e7d0c5 !important; }
   #balance .category-type-health {
-    background: rgba(255, 0, 0, 0.21) !important; }
+    background: rgba(255, 0, 0, 0.21) !important;
+    background: #ffcaca !important; }
   #balance .category-type-shopping {
-    background: rgba(110, 0, 255, 0.18) !important; }
+    background: rgba(110, 0, 255, 0.18) !important;
+    background: #e5d1ff !important; }
   #balance .category-type-utilities {
-    background: rgba(255, 212, 0, 0.19) !important; }
+    background: rgba(255, 212, 0, 0.19) !important;
+    background: #fff7cf !important; }
   #balance .category-type-entertainment {
-    background: rgba(255, 0, 200, 0.16) !important; }
+    background: rgba(255, 0, 200, 0.16) !important;
+    background: #ffd7f6 !important; }
   #balance .category-type-misc {
     background: #dcdcdc !important; }
   #balance .category-type-gifts {
-    background: rgba(0, 255, 255, 0.31) !important; }
+    background: rgba(0, 255, 255, 0.31) !important;
+    background: #b0ffff !important; }
   #balance .save-expense-metadata {
     padding: 0.7rem 1.5rem;
     border: 2px solid #8fc045;
