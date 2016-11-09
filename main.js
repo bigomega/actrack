@@ -150,8 +150,9 @@ function startServer(step) {
     const count = +req.params.count || 0
     balance.getRows(count, (e, cells) => res.json({ e, cells, categories: balance.categories }))
   })
+  app.post('/api/balance', balance.updateCells)
 
-  app.listen(3000, '0.0.0.0', function() { console.log('--- App listening... 0.0.0.0:3000') })
+  app.listen(3000, '0.0.0.0', function() { console.log('--- App ---\n - Listening... 0.0.0.0:3000') })
   step()
 }
 
@@ -228,15 +229,39 @@ balance.getRows = function(pushBack, cb) {
         'return-empty': true,
       }, (err, cells) => {
         if (err) { return s(err) }
-        let data = cells.reduce((mem, c) => {
+        let rows = cells.reduce((mem, c) => {
           const i = c.row - past
           mem[i] = mem[i] ? (mem[i].push(c), mem[i]) : [c]
           return mem
         }, [])
-        data = data.map(r => r.sort((x,y) => x.col - y.col))
-        s(null, { data, sbiDate, stanCharDate })
+        rows = rows.map(r => r.sort((x,y) => x.col - y.col))
+        s(null, { rows, sbiDate, stanCharDate })
       })
   ], cb)
+}
+
+balance.updateCells = function(req, res) {
+  const UPDATE_ALLOWED_CELLS = { 13: true, 14: true, 15: true }
+  const data = req.body
+  if (!data.row) {
+    return res.status(400) && res.send({ message: 'Row not found' })
+  }
+  balance.dataSheet.getCells({
+    'min-row': data.row,
+    'max-row': data.row,
+    'min-col': 13,
+    'return-empty': true,
+  }, function(err, cells) {
+    console.log(`[POST] Balance: R${data.row} - ${moment(cells[0].value, 'M/D/YY').format('l')}`)
+    cells.forEach(c => {
+      if (c.col in UPDATE_ALLOWED_CELLS && req.body[c.col] !== undefined)
+        c.value = req.body[c.col]
+    })
+    balance.dataSheet.bulkUpdateCells(cells, (err) => {
+      console.log('  => values: ', JSON.stringify(data))
+      err ? res.status(400) && res.send(err) : res.json({ message: 'ok' })
+    })
+  })
 }
 
 function debug(step) {

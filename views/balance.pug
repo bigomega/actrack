@@ -3,7 +3,7 @@ head
   link(rel="stylesheet" type="text/css" href="/style.css")
   script.
     window.categories = !{JSON.stringify(categories)};
-    window.data = !{JSON.stringify(data)};
+    window.rows = !{JSON.stringify(rows)};
   script(src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous")
   meta(name="viewport" content="width=device-width, initial-scale=1")
   link(rel="icon" type="image/png" href="/dp-cool-128.png")
@@ -22,8 +22,8 @@ body
         .stanchar.error
           .date= stanCharDate.fromNow()
           span Standard Charted
-    h1.balance= data[data.length - 1][2].value
-    h3.total= data[data.length - 1][7].value
+    h1.balance= rows[rows.length - 1][2].value
+    h3.total= rows[rows.length - 1][7].value
     //- this month - spending & categorization ratio
     .calendar
       .header
@@ -31,11 +31,11 @@ body
           .day-type(class=`day-type-${i}`)= moment().day(i + 1).format('ddd')
       -
         const HIGH_SPENDING = 7499
-        const startDay = moment(data[0][0].value, 'M/D/YY')
+        const startDay = moment(rows[0][0].value, 'M/D/YY')
         const startWeekday = startDay.isoWeekday()
-        let newData = data
+        let newData = rows
         if (startWeekday > 1)
-          newData = Array(startWeekday - 1).join('.').split('.').concat(data)
+          newData = Array(startWeekday - 1).join('.').split('.').concat(rows)
       .days
         for row,i in newData
           - const date = row[0] && moment(row[0].value, 'M/D/YY')
@@ -50,7 +50,7 @@ body
                 .edit(data-id=i) ✏️
               .spending(class=row[11].numericValue > HIGH_SPENDING ? 'spending-high' : '' )
                 | #{row[11].numericValue.toLocaleString()}
-              select.category
+              select.category(data-id=i)
                 each cat in categories
                   option(value=cat, selected=cat === row[13].value)= cat
           else if date
@@ -73,10 +73,11 @@ body
           each cat in categories
             option(value=cat)= cat
         br
-        input.comment(type="text")
+        input.comment(type="text", placeholder="Chart label")
         br
-        textarea.note(rows=3)
+        textarea.note(rows=3, placeholder="Comments / Notes")
         br
+        input.row(type="hidden")
         button.save Save
         br
         button.close Close
