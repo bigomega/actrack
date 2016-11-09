@@ -202,6 +202,7 @@ workout.updateCells = function(req, res) {
 
 balance.getRows = function(pushBack, cb) {
   let sbiDate, stanCharDate
+  const PAST_DAYS = 30
   async.waterfall([
     s => balance.dataSheet.getCells({
         'max-row': 4,
@@ -214,13 +215,24 @@ balance.getRows = function(pushBack, cb) {
         sbiDate = moment(c[3].value, 'D-MMM')
         s(null, +c[0].value)
       })
-    , (sc, s) => balance.dataSheet.getCells({
-        'min-row': sc - 1 - pushBack - 6,
-        'max-row': sc - 1 - pushBack,
+    , (next, s) => {
+      const today = next - 1 - pushBack
+      const past = today > PAST_DAYS + 2 ? (today - PAST_DAYS) : 2
+      console.log(`[GET] Balance: R${past} - R${today}`)
+      if (today < 3) { return s('Can\'t go any further...', {}) }
+      s(null, today, past)
+    }
+    , (today, past, s) => balance.dataSheet.getCells({
+        'min-row': past,
+        'max-row': today,
         'return-empty': true,
       }, (err, cells) => {
         if (err) { return s(err) }
-        let data = cells.reduce((mem, c) => (mem[sc - c.row - 1].push(c), mem), [[],[],[],[],[],[],[]])
+        let data = cells.reduce((mem, c) => {
+          const i = c.row - past
+          mem[i] = mem[i] ? (mem[i].push(c), mem[i]) : [c]
+          return mem
+        }, [])
         data = data.map(r => r.sort((x,y) => x.col - y.col))
         s(null, { data, sbiDate, stanCharDate })
       })

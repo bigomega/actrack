@@ -22,23 +22,49 @@ body
         .stanchar.error
           .date= stanCharDate.fromNow()
           span Standard Charted
-    h1.balance= data[0][2].value
-    h3.total= data[0][7].value
-    //- this month categorization ratio
-    each row in data
-      if row[11].numericValue
-        .day
-          .date= moment(row[0].value, 'M/D/YY').format('ll')
-          span.spending= row[11].value
-          select.category()
-            each cat in categories
-              option(value=cat, selected=cat === row[13].value)= cat
-          //- .comment= row[12].value
-          //- .notes= row[14].value
-      else
-        .day.empty
-          span.date= moment(row[0].value, 'M/D/YY').format('ll')
-          span No expense day
+    h1.balance= data[data.length - 1][2].value
+    h3.total= data[data.length - 1][7].value
+    //- this month - spending & categorization ratio
+    .calendar
+      .header
+        for x,i in Array(8).join('.').split('')
+          .day-type(class=`day-type-${i}`)= moment().day(i + 1).format('ddd')
+      -
+        const HIGH_SPENDING = 7499
+        const startDay = moment(data[0][0].value, 'M/D/YY')
+        const startWeekday = startDay.isoWeekday()
+        let newData = data
+        if (startWeekday > 1)
+          newData = Array(startWeekday)
+            .join('.').split('')
+            .reverse()
+            .map((x,i) => [{
+              value: startDay.subtract(1, 'd').format('M/D/YY'),
+            }])
+            .reverse()
+            .concat(data)
+      .days
+        for row in newData
+          - const date = moment(row[0].value, 'M/D/YY')
+          if row[11] && row[11].numericValue
+            .day(class=`day-type-${date.day()} category-type-${(row[13].value || '').toLowerCase()}`)
+              .date= date.format('D')
+              .spending(class=row[11].numericValue > HIGH_SPENDING ? 'spending-high' : '' )
+                | #{row[11].numericValue}
+              select.category()
+                each cat in categories
+                  option(value=cat, selected=cat === row[13].value)= cat
+              //- .comment= row[12].value
+              //- .notes= row[14].value
+          else
+            .day.empty(class=`day-type-${date.day()}`)
+              span.date= date.format('D')
+
+    .legend
+      each cat in categories
+        .category
+          span.box(class=`category-type-${cat.toLowerCase()}`)
+          span.label= cat
 
     button.save-expense-metadata Save
 

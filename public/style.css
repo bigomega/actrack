@@ -203,53 +203,112 @@ body {
   color: #fff;
   cursor: progress; }
 
-#balance .status .error {
-  display: inline-block;
-  padding: 1em;
-  background: #ff0528;
-  border: 3px solid #bb0d25;
-  color: #fff; }
-  #balance .status .error + .error {
-    margin-left: 1em; }
-  #balance .status .error .date {
-    font-size: 1.2em;
-    margin-bottom: 0.3em; }
-
-#balance .day {
-  margin-bottom: 1em;
-  padding-bottom: 1em;
-  border-bottom: 1px solid #ccc; }
-  #balance .day:not(.empty) .date {
-    margin-bottom: 1em; }
-  #balance .day .spending {
-    margin-right: 1em; }
-  #balance .day.empty {
-    opacity: .5; }
-    #balance .day.empty .date {
-      margin-right: 1em; }
-
-#balance .save-expense-metadata {
-  padding: 0.7rem 1.5rem;
-  border: 2px solid #8fc045;
-  border-radius: 20rem;
-  margin-top: 1.5rem;
-  cursor: pointer;
-  font-family: 'Raleway', sans-serif;
-  font-weight: 600;
-  opacity: 1;
-  font-size: 1.3rem;
-  background: #8fc045;
-  color: #fff;
-  border-color: #719836; }
-
-#balance .save-expense-metadata:hover {
-  background: #fff;
-  border-color: #8fc045;
-  color: #8fc045; }
-
-#balance .save-expense-metadata.disabled,
-#balance .save-expense-metadata.disabled:hover {
-  background: #ccc;
-  border-color: #999;
-  color: #fff;
-  cursor: progress; }
+#balance {
+  max-width: 1200px;
+  padding: 0 15px; }
+  #balance .status .error {
+    display: inline-block;
+    padding: 1em;
+    background: #ff0528;
+    border: 3px solid #bb0d25;
+    color: #fff; }
+    #balance .status .error + .error {
+      margin-left: 1em; }
+    #balance .status .error .date {
+      font-size: 1.2em;
+      margin-bottom: 0.3em; }
+  #balance .calendar {
+    margin: 2em 0; }
+    #balance .calendar .header {
+      display: flex;
+      justify-content: space-around; }
+    #balance .calendar .days {
+      text-align: left; }
+      #balance .calendar .days .day {
+        width: calc(100% / 7);
+        display: inline-block;
+        vertical-align: top;
+        height: 120px;
+        box-shadow: 0 0 0px 1px #ccc;
+        padding: 10px;
+        box-sizing: border-box;
+        background: #fff; }
+        #balance .calendar .days .day.day-type-6 {
+          box-shadow: -3px 0 0 -1px #000,0 0 0px 1px #ccc; }
+        #balance .calendar .days .day.category-type- {
+          background: red; }
+          #balance .calendar .days .day.category-type- .category {
+            border: none;
+            border-bottom: 1px solid;
+            border-radius: 0; }
+    #balance .calendar .spending {
+      text-align: center;
+      margin: 10px 0px;
+      font-size: 1.3em;
+      white-space: nowrap; }
+      #balance .calendar .spending.spending-high {
+        color: red; }
+    #balance .calendar .category {
+      margin: auto;
+      display: block;
+      border: none;
+      max-width: 100%;
+      background-color: rgba(255, 255, 255, 0.4); }
+      #balance .calendar .category[disabled] {
+        opacity: 0.5;
+        background: none; }
+  #balance .legend {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap; }
+    #balance .legend .category {
+      margin: 10px 2em; }
+    #balance .legend .box {
+      width: 20px;
+      height: 100%;
+      margin-right: .5em;
+      vertical-align: bottom;
+      display: inline-block; }
+      #balance .legend .box.category-type- {
+        border: 1px solid #ccc; }
+  #balance .category-type-food {
+    background: rgba(19, 156, 29, 0.22) !important; }
+  #balance .category-type-travel {
+    background: rgba(3, 169, 244, 0.33) !important; }
+  #balance .category-type-housing {
+    background: rgba(175, 98, 62, 0.3) !important; }
+  #balance .category-type-health {
+    background: rgba(255, 0, 0, 0.21) !important; }
+  #balance .category-type-shopping {
+    background: rgba(110, 0, 255, 0.18) !important; }
+  #balance .category-type-utilities {
+    background: rgba(255, 212, 0, 0.19) !important; }
+  #balance .category-type-entertainment {
+    background: rgba(255, 0, 200, 0.16) !important; }
+  #balance .category-type-misc {
+    background: #dcdcdc !important; }
+  #balance .category-type-gifts {
+    background: rgba(0, 255, 255, 0.31) !important; }
+  #balance .save-expense-metadata {
+    padding: 0.7rem 1.5rem;
+    border: 2px solid #8fc045;
+    border-radius: 20rem;
+    margin-top: 1.5rem;
+    cursor: pointer;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+    opacity: 1;
+    font-size: 1.3rem;
+    background: #8fc045;
+    color: #fff;
+    border-color: #719836; }
+  #balance .save-expense-metadata:hover {
+    background: #fff;
+    border-color: #8fc045;
+    color: #8fc045; }
+  #balance .save-expense-metadata.disabled,
+  #balance .save-expense-metadata.disabled:hover {
+    background: #ccc;
+    border-color: #999;
+    color: #fff;
+    cursor: progress; }

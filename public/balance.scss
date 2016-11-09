@@ -16,26 +16,116 @@
     }
   }
 }
+.calendar {
+  margin: 2em 0;
 
-.day {
-  margin-bottom: 1em;
-  padding-bottom: 1em;
-  border-bottom: 1px solid #ccc;
-
-  &:not(.empty) .date {
-    margin-bottom: 1em;
+  .header {
+    display: flex;
+    justify-content: space-around;
   }
+  .days {
+    text-align: left;
+    .day {
+      width: calc(100% / 7);
+      display: inline-block;
+      // text-align: center;
+      vertical-align: top;
+      height: 120px;
+      box-shadow: 0 0 0px 1px #ccc;
+      padding: 10px;
+      box-sizing: border-box;
+      background: #fff;
 
-  .spending {
-    margin-right: 1em;
-  }
-
-  &.empty {
-    opacity: .5;
-
-    .date {
-      margin-right: 1em;
+      &.empty {
+        // background: #e8e8e8;
+      }
+      &.day-type-6 {
+        box-shadow: -3px 0 0 -1px #000,0 0 0px 1px #ccc;
+      }
+      &.category-type- {
+        background: red;
+        .category {
+          border: none;
+          border-bottom: 1px solid;
+          border-radius: 0;
+        }
+      }
     }
+  }
+  .spending {
+    text-align: center;
+    margin: 10px 0px;
+    font-size: 1.3em;
+    white-space: nowrap;
+
+    &.spending-high {
+      color: red;
+    }
+  }
+  .category {
+    margin: auto;
+    display: block;
+    border: none;
+    max-width: 100%;
+    background-color: rgba(255, 255, 255, 0.4);
+
+    &[disabled] {
+      opacity: 0.5;
+      background: none;
+    }
+  }
+}
+.legend {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+
+  .category {
+    margin: 10px 2em;
+  }
+  .box {
+    width: 20px;
+    height: 100%;
+    margin-right: .5em;
+    vertical-align: bottom;
+    display: inline-block;
+
+    &.category-type- {
+      border: 1px solid #ccc;
+    }
+  }
+}
+
+.category-type{
+  &-{//uncategorized
+    //
+  }
+  &-food {
+    background: rgba(19, 156, 29, 0.22) !important;
+  }
+  &-travel {
+    background: rgba(3, 169, 244, 0.33) !important;
+  }
+  &-housing {
+    background: rgba(175, 98, 62, 0.3) !important;
+  }
+  &-health {
+    background: rgba(255, 0, 0, 0.21) !important;
+  }
+  &-shopping {
+    background: rgba(110, 0, 255, 0.18) !important;
+  }
+  &-utilities {
+    background: rgba(255, 212, 0, 0.19) !important;
+  }
+  &-entertainment {
+    background: rgba(255, 0, 200, 0.16) !important;
+  }
+  &-misc {
+    background: #dcdcdc !important;
+  }
+  &-gifts {
+    background: rgba(0, 255, 255, 0.31) !important;
   }
 }
 
