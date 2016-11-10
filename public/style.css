@@ -14,82 +14,82 @@ body {
   color: #333;
   margin: 0; }
 
-#main,
+#workout,
 #balance {
   text-align: center;
   max-width: 500px;
   width: 100%;
   margin: 0 auto 8rem; }
-  #main .nav-container,
+  #workout .nav-container,
   #balance .nav-container {
     position: fixed;
     bottom: -3px;
     left: 0;
     width: 100%;
     z-index: 10; }
-  #main .nav,
+  #workout .nav,
   #balance .nav {
     border: 2px solid #44c6ff;
     display: inline-block;
     border-radius: 5px;
     font-size: 4rem; }
-    #main .nav a,
+    #workout .nav a,
     #balance .nav a {
       display: inline-block;
       padding: 0 20px;
       color: inherit;
       text-decoration: none;
       background: #fff; }
-      #main .nav a:hover,
+      #workout .nav a:hover,
       #balance .nav a:hover {
         background: #c5edff; }
-      #main .nav a.active,
+      #workout .nav a.active,
       #balance .nav a.active {
         background: #44c6ff; }
-      #main .nav a:first-child,
+      #workout .nav a:first-child,
       #balance .nav a:first-child {
         border-top-left-radius: 5px;
         border-bottom-left-radius: 5px; }
-      #main .nav a:last-child,
+      #workout .nav a:last-child,
       #balance .nav a:last-child {
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px; }
   @media screen and (max-width: 600px) {
-    #main .nav-container,
+    #workout .nav-container,
     #balance .nav-container {
       margin-top: 1.3em;
       position: static; }
-    #main .nav,
+    #workout .nav,
     #balance .nav {
       font-size: 2rem; } }
 
-#main .date .arrow {
+#workout .date .arrow {
   font-family: Helvetica, sans-serif;
   padding: 0.5em;
   margin: 0 0 0 .5em;
   text-decoration: none;
   color: inherit;
   opacity: .75; }
-  #main .date .arrow.invisible {
+  #workout .date .arrow.invisible {
     visibility: hidden; }
-  #main .date .arrow:first-child {
+  #workout .date .arrow:first-child {
     margin: 0 .5em 0 0; }
-  #main .date .arrow:hover {
+  #workout .date .arrow:hover {
     color: #8fc045;
     opacity: 1; }
 
-#main .score-img-container {
+#workout .score-img-container {
   width: 150px;
   margin: auto;
   position: relative;
   overflow: hidden; }
-  #main .score-img-container .hat-bg {
+  #workout .score-img-container .hat-bg {
     width: 100%;
     height: 100%;
     /*background: #fff;*/
     position: absolute;
     z-index: -1; }
-  #main .score-img-container .percent {
+  #workout .score-img-container .percent {
     margin-top: 40px;
     margin-bottom: 5px;
     font-size: 40px;
@@ -97,24 +97,24 @@ body {
     /* color: #8fc045; */
     font-family: 'Raleway', sans-serif;
     text-shadow: 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff; }
-  #main .score-img-container .percent.more {
+  #workout .score-img-container .percent.more {
     text-shadow: 0 0 4px #000, 0 0 4px #000, 0 0 4px #000, 0 0 4px #000, 0 0 4px #000, 0 0 4px #000, 0 0 4px #000, 0 0 4px #000, 0 0 4px #000;
     opacity: 0.75;
     color: #fff; }
-  #main .score-img-container .diff {
+  #workout .score-img-container .diff {
     text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff;
     background: rgba(255, 255, 255, 0.7);
     font-family: Helvetica, sans-serif;
     font-size: 0.9em; }
-  #main .score-img-container .diff.low {
+  #workout .score-img-container .diff.low {
     color: #ff0000; }
-  #main .score-img-container .diff.avg {
+  #workout .score-img-container .diff.avg {
     color: rgba(0, 0, 0, 0.49); }
-  #main .score-img-container .diff.high {
+  #workout .score-img-container .diff.high {
     color: #a5ff1c;
     text-shadow: 0 0 3px #5f822c, 0 0 3px #5f822c, 0 0 3px #5f822c, 0 0 3px #5f822c, 0 0 3px #5f822c, 0 0 3px #5f822c, 0 0 3px #5f822c;
     background: rgba(0, 0, 0, 0.25); }
-  #main .score-img-container .percent-filler {
+  #workout .score-img-container .percent-filler {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -125,42 +125,42 @@ body {
     -o-transition: all .25s linear;
     -webkit-transition: all .25s linear;
     transition: all .25s linear; }
-  #main .score-img-container img {
+  #workout .score-img-container img {
     width: 100%;
     vertical-align: bottom;
     box-shadow: 0px -15px 110px -20px #000 inset; }
 
-#main h2 {
+#workout h2 {
   margin-bottom: 0em;
   padding-bottom: 0.3em;
   border-bottom: 2px solid #8fc045; }
 
-#main > table {
+#workout > table {
   width: 100%;
   border-spacing: 0px;
   border-collapse: collapse; }
 
-#main td:first-child {
+#workout td:first-child {
   text-align: right;
   padding-right: 1em !important; }
 
-#main td:last-child {
+#workout td:last-child {
   text-align: left; }
 
-#main .name {
+#workout .name {
   font-family: 'Raleway', sans-serif; }
 
-#main td {
+#workout td {
   position: relative; }
 
-#main .activity td {
+#workout .activity td {
   padding: 1.5rem 0em .3rem; }
 
-#main .activity:first-child td {
+#workout .activity:first-child td {
   padding-top: 0.5em; }
 
-#main .child + .activity td:before,
-#main .activity + .activity td:before {
+#workout .child + .activity td:before,
+#workout .activity + .activity td:before {
   content: ' ';
   display: block;
   width: 100%;
@@ -169,47 +169,47 @@ body {
   position: absolute;
   top: .5rem; }
 
-#main .activity .name {
+#workout .activity .name {
   font-size: 1.3em;
   /* consider removing these vvv */
   vertical-align: top;
   padding-top: 1.6rem; }
 
-#main .child td {
+#workout .child td {
   padding: 0.5em 0; }
 
-#main .radios {
+#workout .radios {
   display: inline-block; }
-  #main .radios label {
+  #workout .radios label {
     cursor: pointer;
     float: left; }
-    #main .radios label span {
+    #workout .radios label span {
       display: inline-block;
       padding: 0.2rem 0.8rem;
       border: 1px solid #fff; }
-    #main .radios label:first-child input:checked + span {
+    #workout .radios label:first-child input:checked + span {
       color: #739a37;
       border: 1px solid;
       border-radius: .25rem; }
-    #main .radios label:last-child input:checked + span {
+    #workout .radios label:last-child input:checked + span {
       color: red;
       border: 1px solid;
       border-radius: .25rem; }
-    #main .radios label input:focus + span {
+    #workout .radios label input:focus + span {
       outline: 2px solid #70ace9;
       outline: -webkit-focus-ring-color auto 5px; }
-    #main .radios label input:not(:checked) + span {
+    #workout .radios label input:not(:checked) + span {
       text-decoration: underline; }
-    #main .radios label input:not(:checked) + span:hover {
+    #workout .radios label input:not(:checked) + span:hover {
       background: #ccc;
       border-radius: .25rem;
       border: 1px solid #fff; }
-  #main .radios input {
+  #workout .radios input {
     /*visibility: hidden;*/
     position: absolute;
     opacity: 0; }
 
-#main input[type=time] {
+#workout input[type=time] {
   height: 28px;
   font-size: 1em;
   padding: 0 0.5em;
@@ -219,7 +219,7 @@ body {
   border-radius: 3px;
   border: 1px solid #ccc; }
 
-#main .save-workout {
+#workout .save {
   padding: 0.7rem 1.5rem;
   border: 2px solid #8fc045;
   border-radius: 20rem;
@@ -232,18 +232,15 @@ body {
   background: #8fc045;
   color: #fff;
   border-color: #719836; }
-
-#main .save-workout:hover {
-  background: #fff;
-  border-color: #8fc045;
-  color: #8fc045; }
-
-#main .save-workout.disabled,
-#main .save-workout.disabled:hover {
-  background: #ccc;
-  border-color: #999;
-  color: #fff;
-  cursor: progress; }
+  #workout .save:hover {
+    background: #fff;
+    border-color: #8fc045;
+    color: #8fc045; }
+  #workout .save.disabled, #workout .save.disabled:hover {
+    background: #ccc;
+    border-color: #999;
+    color: #fff;
+    cursor: progress; }
 
 #balance {
   max-width: 1200px;

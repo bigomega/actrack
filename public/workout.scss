@@ -202,7 +202,7 @@ input[type=time] {
   border: 1px solid #ccc;
 }
 
-.save-workout {
+.save {
   padding: 0.7rem 1.5rem;
   border: 2px solid #8fc045;
   border-radius: 20rem;
@@ -215,16 +215,17 @@ input[type=time] {
   background: #8fc045;
   color: #fff;
   border-color: #719836;
-}
-.save-workout:hover {
-  background: #fff;
-  border-color: #8fc045;
-  color: #8fc045;
-}
-.save-workout.disabled,
-.save-workout.disabled:hover {
-  background: #ccc;
-  border-color: #999;
-  color: #fff;
-  cursor: progress;
+
+  &:hover {
+    background: #fff;
+    border-color: #8fc045;
+    color: #8fc045;
+  }
+  &.disabled,
+  &.disabled:hover {
+    background: #ccc;
+    border-color: #999;
+    color: #fff;
+    cursor: progress;
+  }
 }
