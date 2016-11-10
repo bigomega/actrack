@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans|Raleway');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700|Raleway');
 
 @function multiple-text-shadow($n, $value) {
   $return: $value;
@@ -53,10 +53,10 @@ body {
       background: #fff;
 
       &:hover {
-        background: #44c6ff;
+        background: #c5edff;
       }
       &.active {
-        background: #a2e3ff;
+        background: #44c6ff;
       }
       &:first-child {
         border-top-left-radius: 5px;

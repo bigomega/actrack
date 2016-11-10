@@ -13,7 +13,7 @@ body
   #balance
     .nav-container
       .nav
-        a(href="/") 🏋🏼
+        a(href="/")= isAndroid ? '🏃' : '🏋🏼'
         a.active(href="/balance") 💸
     h3.title Balance and spending
     hr

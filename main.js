@@ -129,7 +129,8 @@ function startServer(step) {
   app.get('/workout(/past/:count)?', auth, (req, res) => {
     const count = +req.params.count || 0
     const date = moment().subtract(count, 'd')
-    workout.getData(date, (e, cells) => e ? res.send(e) : res.render('index', { model: workout.model, cells, date, count }))
+    const isAndroid = req.headers['user-agent'].match(/Android/) // Will remove after 🏋 emoji is implemented
+    workout.getData(date, (e, cells) => e ? res.send(e) : res.render('index', { model: workout.model, cells, date, count, isAndroid }))
   })
   app.get('/api/workout/activity/:date?', auth, (req, res) =>
     workout.getData(req.params.date, (err, cells) => err ? res.send(err) : res.json(cells))
@@ -142,8 +143,9 @@ function startServer(step) {
 
   app.get('/balance(/past/:count)?', auth, (req, res) => {
     const count = +req.params.count || 0
+    const isAndroid = req.headers['user-agent'].match(/Android/) // Temp fix
     balance.getRows(count, (e, data) =>
-      e ? res.send(e) : res.render('balance', Object.assign({ categories: balance.categories, moment }, data))
+      e ? res.send(e) : res.render('balance', Object.assign({ categories: balance.categories, moment, isAndroid }, data))
     )
   })
   app.get('/api/balance(/past/:count)?', auth, (req, res) => {

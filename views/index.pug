@@ -40,7 +40,7 @@ body
   #main(data-row=cells.row)
     .nav-container
       .nav
-        a.active(href="/") 🏋🏼
+        a.active(href="/")= isAndroid ? '🏃' : '🏋🏼'
         a(href="/balance") 💸
     h3.date
       a.arrow(href=`/workout/past/${count + 1}`) ◀

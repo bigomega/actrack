@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Open+Sans|Raleway");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700|Raleway");
 select {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -42,10 +42,10 @@ body {
       background: #fff; }
       #main .nav a:hover,
       #balance .nav a:hover {
-        background: #44c6ff; }
+        background: #c5edff; }
       #main .nav a.active,
       #balance .nav a.active {
-        background: #a2e3ff; }
+        background: #44c6ff; }
       #main .nav a:first-child,
       #balance .nav a:first-child {
         border-top-left-radius: 5px;
@@ -266,6 +266,9 @@ body {
       margin-bottom: 0.3em; }
   #balance .calendar {
     margin: 2em 0; }
+    @media screen and (max-width: 550px) {
+      #balance .calendar {
+        margin-top: 1em; } }
     #balance .calendar .header {
       display: flex;
       justify-content: space-around; }
@@ -281,6 +284,35 @@ body {
         padding: 10px;
         box-sizing: border-box;
         background: #fff; }
+        @media screen and (max-width: 900px) {
+          #balance .calendar .days .day {
+            height: 120px; } }
+        @media screen and (max-width: 550px) {
+          #balance .calendar .days .day {
+            height: 80px;
+            padding: 2px 5px; }
+            #balance .calendar .days .day:not(.empty) {
+              cursor: pointer; }
+            #balance .calendar .days .day:last-child .date {
+              margin: 3px 0 0 !important; }
+            #balance .calendar .days .day .edit,
+            #balance .calendar .days .day .note {
+              display: block;
+              opacity: 0;
+              width: 100%;
+              height: 100%;
+              top: 0;
+              right: 0; }
+            #balance .calendar .days .day .comment,
+            #balance .calendar .days .day .category {
+              display: none; } }
+        @media screen and (max-width: 400px) {
+          #balance .calendar .days .day {
+            height: 60px; } }
+        @media screen and (max-width: 450px) {
+          #balance .calendar .days .day .spending {
+            font-size: .8em;
+            font-weight: 600; } }
         #balance .calendar .days .day:last-child .date {
           background: #ff0047;
           color: #fff;
@@ -420,6 +452,14 @@ body {
       display: inline-block; }
       #balance .legend .box.category-type- {
         border: 1px solid #ccc; }
+    @media screen and (max-width: 550px) {
+      #balance .legend {
+        font-size: .8em; }
+        #balance .legend .box {
+          width: 5px;
+          margin-right: 5px; }
+        #balance .legend .category {
+          margin: 8px 1.5em 0 0; } }
   #balance .category-type-food {
     background: rgba(19, 156, 29, 0.22) !important;
     background: #cbe9cd !important; }
@@ -448,23 +488,25 @@ body {
     background: #b0ffff !important; }
   #balance .model-container {
     display: none;
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
+    overflow: auto;
     background: rgba(0, 0, 0, 0.6); }
     #balance .model-container.open {
       display: block; }
     #balance .model-container .model {
-      position: absolute;
-      left: calc(50% - 200px);
-      top: 4em;
       width: 400px;
+      margin: 4em auto;
       min-height: 300px;
       background: #fff;
       padding: 40px 20px;
       border-radius: 3px; }
+      @media screen and (max-width: 450px) {
+        #balance .model-container .model {
+          width: 280px; } }
     #balance .model-container .date {
       margin: 0; }
     #balance .model-container .comment {

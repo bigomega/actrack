@@ -24,6 +24,9 @@
 }
 .calendar {
   margin: 2em 0;
+  @media screen and (max-width: 550px) {
+    margin-top: 1em;
+  }
 
   .header {
     display: flex;
@@ -43,19 +46,53 @@
       box-sizing: border-box;
       background: #fff;
 
-      &:last-child {
-        .date {
-          background: #ff0047;
-          color: #fff;
-          width: 30px;
-          height: 26px;
-          padding-top: 4px;
-          vertical-align: middle;
-          text-align: center;
-          display: block;
-          border-radius: 50px;
-          margin: -6px 0 0 -6px;
+      @media screen and (max-width: 900px) {
+        height: 120px;
+      }
+      @media screen and (max-width: 550px) {
+        height: 80px;
+        padding: 2px 5px;
+        &:not(.empty) {
+          cursor: pointer;
         }
+        &:last-child  .date{
+          margin: 3px 0 0 !important;
+        }
+        .edit,
+        .note {
+          display: block;
+          opacity: 0;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          right: 0;
+        }
+        .comment,
+        .category {
+          display: none;
+        }
+      }
+      @media screen and (max-width: 400px) {
+        height: 60px;
+      }
+      @media screen and (max-width: 450px) {
+        .spending {
+          font-size: .8em;
+          font-weight: 600;
+        }
+      }
+
+      &:last-child .date {
+        background: #ff0047;
+        color: #fff;
+        width: 30px;
+        height: 26px;
+        padding-top: 4px;
+        vertical-align: middle;
+        text-align: center;
+        display: block;
+        border-radius: 50px;
+        margin: -6px 0 0 -6px;
       }
       &.space {
         box-shadow: none;
@@ -169,6 +206,17 @@
       border: 1px solid #ccc;
     }
   }
+
+  @media screen and (max-width: 550px) {
+    font-size: .8em;
+    .box {
+      width: 5px;
+      margin-right: 5px;
+    }
+    .category {
+      margin: 8px 1.5em 0 0;
+    }
+  }
 }
 
 .category-type{
@@ -214,11 +262,12 @@
 
 .model-container {
   display: none;
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
+  overflow: auto;
   background: rgba(0, 0, 0, 0.6);
 
   &.open {
@@ -226,14 +275,15 @@
   }
 
   .model {
-    position: absolute;
-    left: calc(50% - 200px);
-    top: 4em;
     width: 400px;
+    margin: 4em auto;
     min-height: 300px;
     background: #fff;
     padding: 40px 20px;
     border-radius: 3px;
+    @media screen and (max-width: 450px) {
+      width: 280px;
+    }
   }
   .date {
     margin: 0;
