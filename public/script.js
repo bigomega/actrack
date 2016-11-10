@@ -1,6 +1,6 @@
 $(function(){
-  $('#workout .save-workout').click(function(){
-    var data = { row: $('#main').attr('data-row') }
+  $('#workout .save').click(function(){
+    var data = { row: $('#workout').attr('data-row') }
     $('[data-col]').each(function(i, el){
       var col = $(el).attr('data-col')
       var value
@@ -12,13 +12,13 @@ $(function(){
       data[col] = value
     })
 
-    $('.save-workout').addClass('disabled').text('Saving...')
+    $('.save').addClass('disabled').text('Saving...')
     $.post('/api/workout/activity', data)
       .done(function(){
         window.location.reload()
       })
       .fail(function(err, res){
-        $('.save-workout').removeClass('disabled').text('Save')
+        $('.save').removeClass('disabled').text('Save')
         window.alert('error', JSON.stringify(err), JSON.stringify(res.body))
       })
   })

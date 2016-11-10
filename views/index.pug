@@ -37,7 +37,7 @@ body
       }
     }
 
-  #main(data-row=cells.row)
+  #workout(data-row=cells.row)
     .nav-container
       .nav
         a.active(href="/")= isAndroid ? '🏃' : '🏋🏼'
@@ -74,6 +74,6 @@ body
             tr.child
               td.name= child.name
               td!= renderInput(child)
-    button.save-workout Save
+    button.save Save
 
   script(src="/script.js")

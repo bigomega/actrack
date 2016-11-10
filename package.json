@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "css": "node-sass ./public/style.scss ./public/style.css",
-    "start-prod": "nohup node main.js &>> prod.log&",
+    "start-prod": "npm run css && nohup node main.js &>> prod.log&",
     "start": "node main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
