@@ -49,12 +49,12 @@ body
               .comment= row[12].value
               //- 📓✎📝✏️📒
               if row[14].value
-                .note(data-id=i) 📝
+                .note(data-id=i - (newData.length - rows.length)) 📝
               else
-                .edit(data-id=i) ✏️
+                .edit(data-id=i - (newData.length - rows.length)) ✏️
               .spending(class=row[11].numericValue > HIGH_SPENDING ? 'spending-high' : '' )
                 | #{row[11].numericValue.toLocaleString()}
-              select.category(data-id=i)
+              select.category(data-id=i - (newData.length - rows.length))
                 each cat in categories
                   option(value=cat, selected=cat === row[13].value)= cat
           else if date
