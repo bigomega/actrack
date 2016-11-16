@@ -173,7 +173,7 @@ workout.getData = function(date, cb) {
     'max-col': workout.model.max + 2,
     'return-empty': true,
   }, function(err, cells) {
-    const cellsObj = cells && cells.reduce((mem, c) => (mem[c.col] = c, mem), { row })
+    const cellsObj = !err && cells && cells.reduce((mem, c) => (mem[c.col] = c, mem), { row })
     typeof cb === 'function' && cb(err, cellsObj)
   })
 }
@@ -189,6 +189,7 @@ workout.updateCells = function(req, res) {
     'max-col': workout.model.max,
     'return-empty': true,
   }, function(err, cells) {
+    if (err) { res.status(400); return res.send(err) }
     const findCell = (col) => cells.filter(cell => cell.col == col)[0]
     workout.model.values.forEach(act => (act.children || [act]).forEach(a => {
       if (data[a.col] !== undefined && findCell(a.col))
@@ -196,9 +197,9 @@ workout.updateCells = function(req, res) {
     }))
     const date = moment((findCell(1) || {}).value, 'MMM D, YYYY').format('l')
     console.log(`[POST] Workout: ${date} - R${data.row}`)
-    workout.yearSheet.bulkUpdateCells(cells, (err) => {
+    workout.yearSheet.bulkUpdateCells(cells, (error) => {
       console.log('  => values: ', JSON.stringify(data))
-      err ? res.status(400) && res.send(err) : res.json({ message: 'ok' })
+      error ? res.status(400) && res.send(error) : res.json({ message: 'ok' })
     })
   })
 }
@@ -254,14 +255,15 @@ balance.updateCells = function(req, res) {
     'min-col': 13,
     'return-empty': true,
   }, function(err, cells) {
+    if (err) { res.status(400); return res.send(err) }
     console.log(`[POST] Balance: R${data.row} - ${moment(cells[0].value, 'M/D/YY').format('l')}`)
     cells.forEach(c => {
       if (c.col in UPDATE_ALLOWED_CELLS && req.body[c.col] !== undefined)
         c.value = req.body[c.col]
     })
-    balance.dataSheet.bulkUpdateCells(cells, (err) => {
+    balance.dataSheet.bulkUpdateCells(cells, (error) => {
       console.log('  => values: ', JSON.stringify(data))
-      err ? res.status(400) && res.send(err) : res.json({ message: 'ok' })
+      error ? res.status(400) && res.send(error) : res.json({ message: 'ok' })
     })
   })
 }
