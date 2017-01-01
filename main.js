@@ -27,9 +27,10 @@ function getSheets(step) {
   console.log('Authenticating...')
   async.series([
     s => workout.doc.getInfo(function(err, info) {
+      const year = (new Date()).getFullYear()
       workout._sheets = info
-      workout.yearSheet = info.worksheets.filter(s => s.title == '2016')[0];
-      if (!workout.yearSheet) { return step('No Sheet - 2016', err); }
+      workout.yearSheet = info.worksheets.filter(s => s.title == year)[0];
+      if (!workout.yearSheet) { return step('No Sheet - ' + year, err); }
       console.log(`Loaded doc: ${info.title}, sheet: ${workout.yearSheet.title}`);
       s(err);
     })

@@ -9,8 +9,9 @@ Features
 - [x] - Option to get past days
 - [x] + Show score in UI
 - [ ] ++ Local score calculator
-- [ ] ++ Show progress - analytics
-    - [ ] Basic, last 7 days
+- [ ] Show progress - analytics
+    - [ ] ~ Basic chart, last 7 days
+    - [ ] ~ Score Calendar, last 30 days
 - [ ] ~ Android app
 
-Legend: `+ ~ -` in the order of toughness
+Legend: `- ~ +` in the order of toughness

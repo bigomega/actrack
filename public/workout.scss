@@ -45,7 +45,7 @@
 
     &.less {
       color: red;
-      text-shadow: -2px 0px 1px rgba(red,0.25), 2px 0px 1px rgba(red,0.25), -4px 0px 1px rgba(red,0.25), 4px 0px 1px rgba(red,0.25);
+      text-shadow: -2px 0px 1px rgba(red,0.15), 2px 0px 1px rgba(red,0.15), -4px 0px 1px rgba(red,0.15), 4px 0px 1px rgba(red,0.15);
     }
     &.more {
       text-shadow: multiple-text-shadow(9, '0 0 4px #000');
