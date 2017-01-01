@@ -211,6 +211,15 @@ input[type=time] {
   border: 1px solid #ccc;
 }
 
+textarea {
+  font-size: 1em;
+  padding: 0 0.5em;
+  font-family: 'Open Sans', sans-serif;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  max-width: 105px;
+}
+
 .save {
   padding: 0.7rem 1.5rem;
   border: 2px solid #8fc045;

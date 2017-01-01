@@ -13,7 +13,7 @@ body
     const renderInput = activity => {
       const cell = cells[activity.col] || {}
       switch(activity.type) {
-        case 'bool':
+        case 'yesNo':
           return `
             <div class="radios" data-col="${activity.col}" data-type="bool">
               <label>
@@ -31,6 +31,12 @@ body
           const hour = apZr(parseInt(cell.numericValue * 24))
           const minute = apZr(Math.round((cell.numericValue * 24) % 1 * 60))
           return `<input type="time" ${cell.value ? `value="${hour}:${minute}"` : ''} data-col="${activity.col}" />`
+
+        case 'text':
+          return `<textarea rows="2" data-col="${activity.col}">${cell.value || ''}</textarea>`
+
+        case 'no-edit':
+          return `<label class="no-edit">${cell.value || '---'}</label>`
 
         default:
           return '---'

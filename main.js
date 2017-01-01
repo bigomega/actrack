@@ -89,18 +89,17 @@ workout.createModel = function(cb) {
 
       const child = allCells[1][cell.col]
       const type = (allCells[2][cell.col] || {}).value
-      if (!type) return
       if (cell.value) {
         model.values.push({
           name: cell.value,
-          type,
+          type: type || 'no-edit',
           col: cell.col,
-          children: child.value ? [{ name: child.value, type, col: cell.col }] : null,
+          children: child.value ? [{ name: child.value, type: type || 'no-edit', col: cell.col }] : null,
         })
       } else {
         if (!model.values.length) { return }
         // Update last value
-        (model.values[model.values.length - 1].children || []).push({ name: child.value, type, col: cell.col })
+        (model.values[model.values.length - 1].children || []).push({ name: child.value, type: type || 'no-edit', col: cell.col })
       }
     })
     console.log(' - MODEL\n', model)

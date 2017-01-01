@@ -99,7 +99,7 @@ body {
     text-shadow: 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff; }
     #workout .score-img-container .percent.less {
       color: red;
-      text-shadow: -2px 0px 0px rgba(255, 0, 0, 0.15), 2px 0px 0px rgba(255, 0, 0, 0.15), -4px 0px 0px rgba(255, 0, 0, 0.15), 4px 0px 0px rgba(255, 0, 0, 0.15); }
+      text-shadow: -2px 0px 1px rgba(255, 0, 0, 0.15), 2px 0px 1px rgba(255, 0, 0, 0.15), -4px 0px 1px rgba(255, 0, 0, 0.15), 4px 0px 1px rgba(255, 0, 0, 0.15); }
     #workout .score-img-container .percent.more {
       text-shadow: 0 0 4px #000, 0 0 4px #000, 0 0 4px #000, 0 0 4px #000, 0 0 4px #000, 0 0 4px #000, 0 0 4px #000, 0 0 4px #000, 0 0 4px #000;
       opacity: 0.75;
@@ -223,6 +223,14 @@ body {
   cursor: pointer;
   border-radius: 3px;
   border: 1px solid #ccc; }
+
+#workout textarea {
+  font-size: 1em;
+  padding: 0 0.5em;
+  font-family: 'Open Sans', sans-serif;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  max-width: 105px; }
 
 #workout .save {
   padding: 0.7rem 1.5rem;
@@ -495,6 +503,9 @@ body {
   #balance .category-type-gifts {
     background: rgba(0, 255, 255, 0.31) !important;
     background: #b0ffff !important; }
+  #balance .category-type-e-shopping {
+    background: rgba(233, 0, 255, 0.23) !important;
+    background: #fac5ff !important; }
   #balance .model-container {
     display: none;
     position: fixed;
