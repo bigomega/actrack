@@ -1,6 +1,15 @@
-Personal Activity Tracker
+# A Dynamic Personal Activity Tracker
 
-Features
+### Installation guide
+TBD
+
+### Dev setup
+1. Clone the repo
+2. Install dependencies `npm install` (Install npm if you haven't)
+3. Run server `npm start`
+4. In parallel, have scss compiler `npm run css` 
+
+### Features
 - [x] Basic auth
 - [x] Get current day
 - [x] Update values on save
@@ -14,4 +23,11 @@ Features
     - [ ] ~ Score Calendar, last 30 days
 - [ ] ~ Android app
 
-Legend: `- ~ +` in the order of toughness
+### Todo before public
+- [ ] Sample google sheet
+- [ ] Code clean up
+    - [ ] Heroku support
+- [ ] Installation guide
+- [ ] Webpage for it
+
+> Legend: `- ~ +` in the order of toughness
